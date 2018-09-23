@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Titanic: Beyond the Movie</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Ghislain Nono Gueye, Ph.D." />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style\style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Titanic: Beyond the Movie
+### Ghislain Nono Gueye, Ph.D.
+
+---
+
+
+
+
+class: center, middle
+
+&lt;img src="media/titanic.jpg" width="110%" /&gt;
+
+Source: [www.britannica.com](https://www.britannica.com/topic/Titanic/images-videos/media/597128/7788)
+
+---
+
+class: inverse, center, middle
+
+ # A few facts about the Titanic
+
+---
+
+class: center, middle
+
+- Full name: Royal Mail Ship (RMS) Titanic
+
+- Length: 269m (882.5 feet)
+
+- Width: 28.2m (92.5 feet)
+
+- Carrying capacity: 46,328 tons
+
+- Was built in Belfast (Ireland)
+
+- Many claimed that the Titanic was unsinkable (source: [www.britannica.com](https://www.britannica.com/topic/Titanic))
+
+- The Titanic sank during its .red[maiden voyage].
+
+- Date of the tragedy: April 14-15, 1912
+
+---
+
+class: inverse, center, middle
+
+# Initial setup
+
+## Be very organized in your work!
+
+---
+
+A- Create a folder in a location of your choice: .red[`Data_Science_Seminar`].
+
+- Let it be the master folder for everything you do in the seminar.
+    
+- Avoid \*spaces\* when you name things.
+
+--
+
+B- Create a subfolder inside the master folder for the analysis of the Titanic data: .red[`titanic_analysis`].
+
+- This is where everything related to the analysis will reside: 
+    
+- Creating sub-folders for similar file types is a very good habit to have: R scripts, graphs, data, reports, ...
+
+--
+
+C- `titanic_analysis` is the **root folder/directory** of our project. We need to make sure RStudio knows it!
+
+- Open RStudio (the top-right corner should say: "Project: (None)").
+    
+- File &gt; New project &gt; Existing directory &gt; Browse...
+    
+- ... Look for the `titanic_analysis` folder and click on it.
+    
+- Click the "Open" button.
+    
+- Click the "Create project" button.
+
+---
+
+class: center
+
+- The top-right corner of RStudio should now have: `titanic_analysis` - the name of your project.
+
+- The actual `titanic-analysis` root folder has a new file with the same name (with the extension *R Project*).
+
+- Now RStudio recognizes the folder you created as the root folder of your project!
+
+--
+
+
+### .red[Time to download the data into our root folder]
+
+Place it in a subfolder called .red[data].
+
+Link: [titanic.csv](http://bit.ly/2po1gQu)
+
+--
+
+### .red[Exercise]
+
+Create a new folder called `fastfood_nutrition` and make it the root folder of an RStudio project!
+
+Link: [fastfood_calories.csv](http://bit.ly/2NqGnmd)
+
+
+
+---
+
+class: inverse, center, middle
+
+## Let's Get to Know our Data
+
+---
+
+class: left
+
+- The data is a .red[data frame].
+
+- Each column is a **variable**.
+
+- Each row is an **observation**.
+
+--
+
+.pull-left[
+- .blue[`PassengerId`]: Identification number of each passenger.
+
+- .blue[`Survived`]:
+
+    - 0: did not survive
+    
+    - 1: survived
+
+- .blue[`Pclass`]: Passenger class
+
+    - 1: first class
+    
+    - 2: second class
+    
+    - 3: third class
+
+- .blue[`Name`]: Name of each passenger
+
+- .blue[`Sex`]: Gender of each passenger
+]
+
+.pull-right[
+- .blue[`Age`]: Age of each passenger
+
+- .blue[`SibSp`]: Siblings and spouse
+
+- .blue[`Parch`]: Parents and children
+
+- .blue[`Ticket`]: Ticket number
+
+- .blue[`Fare`]: Price paid for the voyage
+
+- .blue[`Cabin`]: Cabin number
+
+- .blue[`Embarked`]: City of origin
+
+    - S: Southampton (England)
+    
+    - C: Cherbourg (France)
+    
+    - Q: Queenstown (Ireland)
+]
+
+
+---
+
+class: inverse, middle, center
+
+# Let's Gear up!
+
+&lt;img src="https://media.giphy.com/media/6Si7a90lnHTOg/giphy.gif" width="100%" /&gt;
+
+---
+
+class: big-font
+
+## What is a function?
+
+A specific instruction given to the computer.
+
+E.g. `filter()`, `sum()`, `all.equal()`, ...
+
+--
+
+
+```r
+lm
+```
+
+```
+function (formula, data, subset, weights, na.action, method = "qr", 
+    model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, 
+    contrasts = NULL, offset, ...) 
+{
+    ret.x &lt;- x
+    ret.y &lt;- y
+    cl &lt;- match.call()
+    mf &lt;- match.call(expand.dots = FALSE)
+    m &lt;- match(c("formula", "data", "subset", "weights", "na.action", 
+        "offset"), names(mf), 0L)
+    mf &lt;- mf[c(1L, m)]
+    mf$drop.unused.levels &lt;- TRUE
+    mf[[1L]] &lt;- quote(stats::model.frame)
+    mf &lt;- eval(mf, parent.frame())
+    if (method == "model.frame") 
+        return(mf)
+    else if (method != "qr") 
+        warning(gettextf("method = '%s' is not supported. Using 'qr'", 
+            method), domain = NA)
+    mt &lt;- attr(mf, "terms")
+    y &lt;- model.response(mf, "numeric")
+    w &lt;- as.vector(model.weights(mf))
+    if (!is.null(w) &amp;&amp; !is.numeric(w)) 
+        stop("'weights' must be a numeric vector")
+    offset &lt;- as.vector(model.offset(mf))
+    if (!is.null(offset)) {
+        if (length(offset) != NROW(y)) 
+            stop(gettextf("number of offsets is %d, should equal %d (number of observations)", 
+                length(offset), NROW(y)), domain = NA)
+    }
+    if (is.empty.model(mt)) {
+        x &lt;- NULL
+        z &lt;- list(coefficients = if (is.matrix(y)) matrix(, 0, 
+            3) else numeric(), residuals = y, fitted.values = 0 * 
+            y, weights = w, rank = 0L, df.residual = if (!is.null(w)) sum(w != 
+            0) else if (is.matrix(y)) nrow(y) else length(y))
+        if (!is.null(offset)) {
+            z$fitted.values &lt;- offset
+            z$residuals &lt;- y - offset
+        }
+    }
+    else {
+        x &lt;- model.matrix(mt, mf, contrasts)
+        z &lt;- if (is.null(w)) 
+            lm.fit(x, y, offset = offset, singular.ok = singular.ok, 
+                ...)
+        else lm.wfit(x, y, w, offset = offset, singular.ok = singular.ok, 
+            ...)
+    }
+    class(z) &lt;- c(if (is.matrix(y)) "mlm", "lm")
+    z$na.action &lt;- attr(mf, "na.action")
+    z$offset &lt;- offset
+    z$contrasts &lt;- attr(x, "contrasts")
+    z$xlevels &lt;- .getXlevels(mt, mf)
+    z$call &lt;- cl
+    z$terms &lt;- mt
+    if (model) 
+        z$model &lt;- mf
+    if (ret.x) 
+        z$x &lt;- x
+    if (ret.y) 
+        z$y &lt;- y
+    if (!qr) 
+        z$qr &lt;- NULL
+    z
+}
+&lt;bytecode: 0x000000000a24e6e0&gt;
+&lt;environment: namespace:stats&gt;
+```
+
+---
+
+class: big-font
+
+## What is a function?
+
+.center[A function is a tool!]
+
+.center[
+&lt;img src="https://media.giphy.com/media/3oKIPqsXYcdjcBcXL2/giphy.gif" width="60%" /&gt;
+]
+
+---
+
+class: center, big-font
+
+## What is a package?
+
+A collection of functions.
+
+A package can also contain data.
+
+--
+
+Actually, there are data packages!
+
+e.g. `wooldridge`, `Ecdat`, `datasets`, ...
+
+
+---
+
+class: center, big-font
+
+## What is a package?
+
+A package is a tool box!
+
+&lt;img src="https://media.giphy.com/media/XIm5w1pgUmyc0/giphy.gif" width="40%" /&gt;
+
+---
+
+class: big-font, center, middle
+
+## Create a new R script
+
+File &gt; New File &gt; R Script
+
+This is where you'll write all your code!
+
+---
+
+class: big-font
+
+## Installing a package
+
+- R comes with many packages.
+
+- Many more are developed by the community and made available for free!
+
+--
+
+
+```r
+install.packages("readr") # For importing data into R
+install.packages("dplyr") # For manipulating data
+install.packages("ggplot2") # For visualizing data
+```
+
+Execute the code with:
+
+- `Ctrl + Enter` (Windows)
+
+- `Cmd + Enter` (Mac)
+
+.red[Once a package is installed once, it's installed forever!]
+
+---
+
+class: big-font
+
+## Loading a package
+
+- Loading a package = opening the toolbox
+
+- Need to do it whenever you need to use the tools inside the package
+
+--
+
+
+```r
+library(readr) # For importing data into R
+library(dplyr) # For manipulating data
+library(ggplot2) # For visualizing data
+```
+
+---
+
+class: inverse, center, middle
+
+# Import the data
+
+---
+
+class: big-font
+
+## `read_csv` (in the `readr` package)
+
+
+```r
+read_csv("data/titanic.csv")
+```
+
+```
+# A tibble: 891 x 12
+   PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+         &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+ 1           1        0      3 Brau~ male     22     1     0 A/5 2~  7.25
+ 2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 71.3 
+ 3           3        1      3 Heik~ fema~    26     0     0 STON/~  7.92
+ 4           4        1      1 Futr~ fema~    35     1     0 113803 53.1 
+ 5           5        0      3 Alle~ male     35     0     0 373450  8.05
+ 6           6        0      3 Mora~ male     NA     0     0 330877  8.46
+ 7           7        0      1 McCa~ male     54     0     0 17463  51.9 
+ 8           8        0      3 Pals~ male      2     3     1 349909 21.1 
+ 9           9        1      3 John~ fema~    27     0     2 347742 11.1 
+10          10        1      2 Nass~ fema~    14     1     0 237736 30.1 
+# ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+#   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+The data set can be stored inside .red[a variable].
+
+
+```r
+titanic &lt;- read_csv("data/titanic.csv")
+titanic
+```
+
+```
+# A tibble: 891 x 12
+   PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+         &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+ 1           1        0      3 Brau~ male     22     1     0 A/5 2~  7.25
+ 2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 71.3 
+ 3           3        1      3 Heik~ fema~    26     0     0 STON/~  7.92
+ 4           4        1      1 Futr~ fema~    35     1     0 113803 53.1 
+ 5           5        0      3 Alle~ male     35     0     0 373450  8.05
+ 6           6        0      3 Mora~ male     NA     0     0 330877  8.46
+ 7           7        0      1 McCa~ male     54     0     0 17463  51.9 
+ 8           8        0      3 Pals~ male      2     3     1 349909 21.1 
+ 9           9        1      3 John~ fema~    27     0     2 347742 11.1 
+10          10        1      2 Nass~ fema~    14     1     0 237736 30.1 
+# ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+#   Embarked &lt;chr&gt;
+```
+
+Now, the .red[variable] shows up in the .blue[environment].
+
+---
+
+class: big-font
+
+Get a glimpse of the data set
+
+
+```r
+glimpse(titanic)
+```
+
+```
+Observations: 891
+Variables: 12
+$ PassengerId &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,...
+$ Survived    &lt;int&gt; 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0,...
+$ Pclass      &lt;int&gt; 3, 1, 3, 1, 3, 3, 1, 3, 3, 2, 3, 1, 3, 3, 3, 2, 3,...
+$ Name        &lt;chr&gt; "Braund, Mr. Owen Harris", "Cumings, Mrs. John Bra...
+$ Sex         &lt;chr&gt; "male", "female", "female", "female", "male", "mal...
+$ Age         &lt;dbl&gt; 22, 38, 26, 35, 35, NA, 54, 2, 27, 14, 4, 58, 20, ...
+$ SibSp       &lt;int&gt; 1, 1, 0, 1, 0, 0, 0, 3, 0, 1, 1, 0, 0, 1, 0, 0, 4,...
+$ Parch       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 1, 0, 0, 5, 0, 0, 1,...
+$ Ticket      &lt;chr&gt; "A/5 21171", "PC 17599", "STON/O2. 3101282", "1138...
+$ Fare        &lt;dbl&gt; 7.2500, 71.2833, 7.9250, 53.1000, 8.0500, 8.4583, ...
+$ Cabin       &lt;chr&gt; NA, "C85", NA, "C123", NA, NA, "E46", NA, NA, NA, ...
+$ Embarked    &lt;chr&gt; "S", "C", "S", "S", "S", "Q", "S", "S", "S", "C", ...
+```
+
+---
+
+class: big-font
+
+View the entire data set in a spreadsheet format.
+
+
+```r
+View(titanic)
+```
+
+&lt;img src="media/View-function-capture.png" width="90%" /&gt;
+
+---
+
+class: inverse, center, middle
+
+# Manipulate the data
+
+---
+
+class: big-font, center, middle
+
+## `filter` (in the `dplyr` package)
+
+### *Remove unwanted material.*
+
+
+&lt;img src="https://media.giphy.com/media/5xtDarIwkXunoCmm7XG/giphy.gif" width="80%" /&gt;
+
+---
+
+class: big-font
+
+.blue[Who are the adults in the titanic?]
+
+
+```r
+filter(titanic, Age &gt;= 18)
+```
+
+```
+## # A tibble: 601 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  7.25
+##  2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 71.3 
+##  3           3        1      3 Heik~ fema~    26     0     0 STON/~  7.92
+##  4           4        1      1 Futr~ fema~    35     1     0 113803 53.1 
+##  5           5        0      3 Alle~ male     35     0     0 373450  8.05
+##  6           7        0      1 McCa~ male     54     0     0 17463  51.9 
+##  7           9        1      3 John~ fema~    27     0     2 347742 11.1 
+##  8          12        1      1 Bonn~ fema~    58     0     0 113783 26.6 
+##  9          13        0      3 Saun~ male     20     0     0 A/5. ~  8.05
+## 10          14        0      3 Ande~ male     39     1     5 347082 31.3 
+## # ... with 591 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Who are the senior citizens in the titanic?]
+
+
+```r
+filter(titanic, Age &gt;= 60)
+```
+
+```
+## # A tibble: 26 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1          34        0      2 Whea~ male   66       0     0 C.A. ~ 10.5 
+##  2          55        0      1 Ostb~ male   65       0     1 113509 62.0 
+##  3          97        0      1 Gold~ male   71       0     0 PC 17~ 34.7 
+##  4         117        0      3 Conn~ male   70.5     0     0 370369  7.75
+##  5         171        0      1 Van ~ male   61       0     0 111240 33.5 
+##  6         253        0      1 Stea~ male   62       0     0 113514 26.6 
+##  7         276        1      1 Andr~ fema~  63       1     0 13502  78.0 
+##  8         281        0      3 Duan~ male   65       0     0 336439  7.75
+##  9         327        0      3 Nysv~ male   61       0     0 345364  6.24
+## 10         367        1      1 Warr~ fema~  60       1     0 110813 75.2 
+## # ... with 16 more rows, and 2 more variables: Cabin &lt;chr&gt;, Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Who are the survivors?]
+
+
+```r
+filter(titanic, Survived == 1)
+```
+
+```
+## # A tibble: 342 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 71.3 
+##  2           3        1      3 Heik~ fema~    26     0     0 STON/~  7.92
+##  3           4        1      1 Futr~ fema~    35     1     0 113803 53.1 
+##  4           9        1      3 John~ fema~    27     0     2 347742 11.1 
+##  5          10        1      2 Nass~ fema~    14     1     0 237736 30.1 
+##  6          11        1      3 Sand~ fema~     4     1     1 PP 95~ 16.7 
+##  7          12        1      1 Bonn~ fema~    58     0     0 113783 26.6 
+##  8          16        1      2 Hewl~ fema~    55     0     0 248706 16   
+##  9          18        1      2 Will~ male     NA     0     0 244373 13   
+## 10          20        1      3 Mass~ fema~    NA     0     0 2649    7.22
+## # ... with 332 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Who died after the tragedy?]
+
+
+```r
+filter(titanic, Survived == 0)
+```
+
+```
+## # A tibble: 549 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  7.25
+##  2           5        0      3 Alle~ male     35     0     0 373450  8.05
+##  3           6        0      3 Mora~ male     NA     0     0 330877  8.46
+##  4           7        0      1 McCa~ male     54     0     0 17463  51.9 
+##  5           8        0      3 Pals~ male      2     3     1 349909 21.1 
+##  6          13        0      3 Saun~ male     20     0     0 A/5. ~  8.05
+##  7          14        0      3 Ande~ male     39     1     5 347082 31.3 
+##  8          15        0      3 Vest~ fema~    14     0     0 350406  7.85
+##  9          17        0      3 Rice~ male      2     4     1 382652 29.1 
+## 10          19        0      3 Vand~ fema~    31     1     0 345763 18   
+## # ... with 539 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[The women on the Titanic]
+
+
+```r
+filter(titanic, Sex == "female")
+```
+
+```
+## # A tibble: 314 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 71.3 
+##  2           3        1      3 Heik~ fema~    26     0     0 STON/~  7.92
+##  3           4        1      1 Futr~ fema~    35     1     0 113803 53.1 
+##  4           9        1      3 John~ fema~    27     0     2 347742 11.1 
+##  5          10        1      2 Nass~ fema~    14     1     0 237736 30.1 
+##  6          11        1      3 Sand~ fema~     4     1     1 PP 95~ 16.7 
+##  7          12        1      1 Bonn~ fema~    58     0     0 113783 26.6 
+##  8          15        0      3 Vest~ fema~    14     0     0 350406  7.85
+##  9          16        1      2 Hewl~ fema~    55     0     0 248706 16   
+## 10          19        0      3 Vand~ fema~    31     1     0 345763 18   
+## # ... with 304 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[The men on the Titanic.]
+
+
+```r
+filter(titanic, Sex == "male")
+```
+
+```
+## # A tibble: 577 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  7.25
+##  2           5        0      3 Alle~ male     35     0     0 373450  8.05
+##  3           6        0      3 Mora~ male     NA     0     0 330877  8.46
+##  4           7        0      1 McCa~ male     54     0     0 17463  51.9 
+##  5           8        0      3 Pals~ male      2     3     1 349909 21.1 
+##  6          13        0      3 Saun~ male     20     0     0 A/5. ~  8.05
+##  7          14        0      3 Ande~ male     39     1     5 347082 31.3 
+##  8          17        0      3 Rice~ male      2     4     1 382652 29.1 
+##  9          18        1      2 Will~ male     NA     0     0 244373 13   
+## 10          21        0      2 Fynn~ male     35     0     0 239865 26   
+## # ... with 567 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[The teenagers on the Titanic]
+
+
+```r
+filter(titanic, Age &gt;= 13, Age &lt; 20)
+```
+
+```
+## # A tibble: 95 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket   Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt;
+##  1          10        1      2 Nass~ fema~    14     1     0 237736  30.1 
+##  2          15        0      3 Vest~ fema~    14     0     0 350406   7.85
+##  3          23        1      3 "McG~ fema~    15     0     0 330923   8.03
+##  4          28        0      1 Fort~ male     19     3     2 19950  263   
+##  5          39        0      3 Vand~ fema~    18     2     0 345764  18   
+##  6          40        1      3 Nico~ fema~    14     1     0 2651    11.2 
+##  7          45        1      3 Deva~ fema~    19     0     0 330958   7.88
+##  8          50        0      3 Arno~ fema~    18     1     0 349237  17.8 
+##  9          68        0      3 Crea~ male     19     0     0 S.P. ~   8.16
+## 10          69        1      3 Ande~ fema~    17     4     2 31012~   7.92
+## # ... with 85 more rows, and 2 more variables: Cabin &lt;chr&gt;, Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Was there any baby on the Titanic without the parents?]
+
+
+```r
+filter(titanic, Age &lt;= 2, Parch == 0)
+```
+
+```
+## # A tibble: 0 x 12
+## # ... with 12 variables: PassengerId &lt;int&gt;, Survived &lt;int&gt;, Pclass &lt;int&gt;,
+## #   Name &lt;chr&gt;, Sex &lt;chr&gt;, Age &lt;dbl&gt;, SibSp &lt;int&gt;, Parch &lt;int&gt;,
+## #   Ticket &lt;chr&gt;, Fare &lt;dbl&gt;, Cabin &lt;chr&gt;, Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[All passengers except those from Southampton.]
+
+
+```r
+filter(titanic, Embarked != "S")
+```
+
+```
+## # A tibble: 245 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket   Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt;
+##  1           2        1      1 Cumi~ fema~    38     1     0 PC 17~  71.3 
+##  2           6        0      3 Mora~ male     NA     0     0 330877   8.46
+##  3          10        1      2 Nass~ fema~    14     1     0 237736  30.1 
+##  4          17        0      3 Rice~ male      2     4     1 382652  29.1 
+##  5          20        1      3 Mass~ fema~    NA     0     0 2649     7.22
+##  6          23        1      3 "McG~ fema~    15     0     0 330923   8.03
+##  7          27        0      3 Emir~ male     NA     0     0 2631     7.22
+##  8          29        1      3 "O'D~ fema~    NA     0     0 330959   7.88
+##  9          31        0      1 Uruc~ male     40     0     0 PC 17~  27.7 
+## 10          32        1      1 Spen~ fema~    NA     1     0 PC 17~ 147.  
+## # ... with 235 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Any lonely senior citizen from Queenstown?]
+
+
+```r
+filter(titanic, Embarked == "Q", Age &gt;= 60, Parch == 0, SibSp == 0)
+```
+
+```
+## # A tibble: 2 x 12
+##   PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##         &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+## 1         117        0      3 Conn~ male   70.5     0     0 370369  7.75
+## 2         281        0      3 Duan~ male   65       0     0 336439  7.75
+## # ... with 2 more variables: Cabin &lt;chr&gt;, Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font, center, middle
+
+## `arrange` (in the `dplyr` package)
+
+### *Put (things) in a neat, attractive or required order.*
+
+&lt;img src="https://media.giphy.com/media/unpSpZE6GSqc/giphy.gif" width="30%" /&gt;
+---
+
+class: big-font
+
+.blue[Lowest fare paid on the Titanic!]
+
+
+```r
+arrange(titanic, Fare)
+```
+
+```
+## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         180        0      3 Leon~ male     36     0     0 LINE       0
+##  2         264        0      1 Harr~ male     40     0     0 112059     0
+##  3         272        1      3 Torn~ male     25     0     0 LINE       0
+##  4         278        0      2 "Par~ male     NA     0     0 239853     0
+##  5         303        0      3 John~ male     19     0     0 LINE       0
+##  6         414        0      2 Cunn~ male     NA     0     0 239853     0
+##  7         467        0      2 Camp~ male     NA     0     0 239853     0
+##  8         482        0      2 "Fro~ male     NA     0     0 239854     0
+##  9         598        0      3 John~ male     49     0     0 LINE       0
+## 10         634        0      1 Parr~ male     NA     0     0 112052     0
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+
+---
+
+class: big-font
+
+.blue[Highest fare paid on the Titanic!]
+
+
+```r
+arrange(titanic, -Fare)
+```
+
+```
+## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         259        1      1 Ward~ fema~    35     0     0 PC 17~  512.
+##  2         680        1      1 Card~ male     36     0     1 PC 17~  512.
+##  3         738        1      1 Lesu~ male     35     0     0 PC 17~  512.
+##  4          28        0      1 Fort~ male     19     3     2 19950   263 
+##  5          89        1      1 Fort~ fema~    23     3     2 19950   263 
+##  6         342        1      1 Fort~ fema~    24     3     2 19950   263 
+##  7         439        0      1 Fort~ male     64     1     4 19950   263 
+##  8         312        1      1 Ryer~ fema~    18     2     2 PC 17~  262.
+##  9         743        1      1 "Rye~ fema~    21     2     2 PC 17~  262.
+## 10         119        0      1 Baxt~ male     24     0     1 PC 17~  248.
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Oldest passenger on the titanic.]
+
+
+```r
+arrange(titanic, -Age)
+```
+
+```
+## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         631        1      1 Bark~ male   80       0     0 27042  30   
+##  2         852        0      3 Sven~ male   74       0     0 347060  7.78
+##  3          97        0      1 Gold~ male   71       0     0 PC 17~ 34.7 
+##  4         494        0      1 Arta~ male   71       0     0 PC 17~ 49.5 
+##  5         117        0      3 Conn~ male   70.5     0     0 370369  7.75
+##  6         673        0      2 Mitc~ male   70       0     0 C.A. ~ 10.5 
+##  7         746        0      1 Cros~ male   70       1     1 WE/P ~ 71   
+##  8          34        0      2 Whea~ male   66       0     0 C.A. ~ 10.5 
+##  9          55        0      1 Ostb~ male   65       0     1 113509 62.0 
+## 10         281        0      3 Duan~ male   65       0     0 336439  7.75
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Arrange by Age and Fare]
+
+
+```r
+arrange(titanic, Age, -Fare)
+```
+
+```
+## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket   Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt;
+##  1         804        1      3 Thom~ male   0.42     0     1 2625     8.52
+##  2         756        1      2 Hama~ male   0.67     1     1 250649  14.5 
+##  3         470        1      3 Bacl~ fema~  0.75     2     1 2666    19.3 
+##  4         645        1      3 Bacl~ fema~  0.75     2     1 2666    19.3 
+##  5          79        1      2 Cald~ male   0.83     0     2 248738  29   
+##  6         832        1      2 Rich~ male   0.83     1     1 29106   18.8 
+##  7         306        1      1 Alli~ male   0.92     1     2 113781 152.  
+##  8         387        0      3 Good~ male   1        5     2 CA 21~  46.9 
+##  9         165        0      3 Panu~ male   1        4     1 31012~  39.7 
+## 10         184        1      2 Beck~ male   1        2     1 230136  39   
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Arrange by Age and Fare]
+
+
+```r
+arrange(titanic, -Age, Fare)
+```
+
+```
+## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         631        1      1 Bark~ male   80       0     0 27042  30   
+##  2         852        0      3 Sven~ male   74       0     0 347060  7.78
+##  3          97        0      1 Gold~ male   71       0     0 PC 17~ 34.7 
+##  4         494        0      1 Arta~ male   71       0     0 PC 17~ 49.5 
+##  5         117        0      3 Conn~ male   70.5     0     0 370369  7.75
+##  6         673        0      2 Mitc~ male   70       0     0 C.A. ~ 10.5 
+##  7         746        0      1 Cros~ male   70       1     1 WE/P ~ 71   
+##  8          34        0      2 Whea~ male   66       0     0 C.A. ~ 10.5 
+##  9         281        0      3 Duan~ male   65       0     0 336439  7.75
+## 10         457        0      1 Mill~ male   65       0     0 13509  26.6 
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+
+---
+
+class: middle, center
+
+# `filter()` + `arrange()`
+
+&lt;img src="https://media.giphy.com/media/Ub4kWebdWWJP2/giphy.gif" width="70%" /&gt;
+
+---
+
+class: big-font
+
+.blue[Lowest and highest fare paid by a class 1 passenger.]
+
+
+```r
+class_1 &lt;- filter(titanic, Pclass == 1)
+class_1
+```
+
+```
+## # A tibble: 216 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           2        1      1 Cumi~ fema~    38     1     0 PC 17~  71.3
+##  2           4        1      1 Futr~ fema~    35     1     0 113803  53.1
+##  3           7        0      1 McCa~ male     54     0     0 17463   51.9
+##  4          12        1      1 Bonn~ fema~    58     0     0 113783  26.6
+##  5          24        1      1 Slop~ male     28     0     0 113788  35.5
+##  6          28        0      1 Fort~ male     19     3     2 19950  263  
+##  7          31        0      1 Uruc~ male     40     0     0 PC 17~  27.7
+##  8          32        1      1 Spen~ fema~    NA     1     0 PC 17~ 147. 
+##  9          35        0      1 Meye~ male     28     1     0 PC 17~  82.2
+## 10          36        0      1 Holv~ male     42     1     0 113789  52  
+## # ... with 206 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Lowest fare paid by a class 1 passenger.]
+
+
+```r
+arrange(class_1, Fare)
+```
+
+```
+## # A tibble: 216 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         264        0      1 Harr~ male     40     0     0 112059   0  
+##  2         634        0      1 Parr~ male     NA     0     0 112052   0  
+##  3         807        0      1 Andr~ male     39     0     0 112050   0  
+##  4         816        0      1 Fry,~ male     NA     0     0 112058   0  
+##  5         823        0      1 Reuc~ male     38     0     0 19972    0  
+##  6         873        0      1 Carl~ male     33     0     0 695      5  
+##  7         663        0      1 Coll~ male     47     0     0 5727    25.6
+##  8         169        0      1 Baum~ male     NA     0     0 PC 17~  25.9
+##  9         797        1      1 Lead~ fema~    49     0     0 17465   25.9
+## 10         863        1      1 Swif~ fema~    48     0     0 17466   25.9
+## # ... with 206 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Highest fare paid by a class 1 passenger.]
+
+
+```r
+arrange(class_1, -Fare)
+```
+
+```
+## # A tibble: 216 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         259        1      1 Ward~ fema~    35     0     0 PC 17~  512.
+##  2         680        1      1 Card~ male     36     0     1 PC 17~  512.
+##  3         738        1      1 Lesu~ male     35     0     0 PC 17~  512.
+##  4          28        0      1 Fort~ male     19     3     2 19950   263 
+##  5          89        1      1 Fort~ fema~    23     3     2 19950   263 
+##  6         342        1      1 Fort~ fema~    24     3     2 19950   263 
+##  7         439        0      1 Fort~ male     64     1     4 19950   263 
+##  8         312        1      1 Ryer~ fema~    18     2     2 PC 17~  262.
+##  9         743        1      1 "Rye~ fema~    21     2     2 PC 17~  262.
+## 10         119        0      1 Baxt~ male     24     0     1 PC 17~  248.
+## # ... with 206 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Lowest fare paid by a class 3 passenger.]
+
+
+```r
+class_3 &lt;- filter(titanic, Pclass == 3)
+arrange(class_3, Fare)
+```
+
+```
+## # A tibble: 491 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         180        0      3 Leon~ male   36       0     0 LINE    0   
+##  2         272        1      3 Torn~ male   25       0     0 LINE    0   
+##  3         303        0      3 John~ male   19       0     0 LINE    0   
+##  4         598        0      3 John~ male   49       0     0 LINE    0   
+##  5         379        0      3 Betr~ male   20       0     0 2648    4.01
+##  6         327        0      3 Nysv~ male   61       0     0 345364  6.24
+##  7         844        0      3 Lemb~ male   34.5     0     0 2683    6.44
+##  8         819        0      3 Holm~ male   43       0     0 C 7075  6.45
+##  9         203        0      3 Joha~ male   34       0     0 31012~  6.50
+## 10         372        0      3 Wikl~ male   18       1     0 31012~  6.50
+## # ... with 481 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Highest fare paid by a class 3 passenger.]
+
+
+```r
+arrange(class_3, -Fare)
+```
+
+```
+## # A tibble: 491 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         160        0      3 Sage~ male     NA     8     2 CA. 2~  69.6
+##  2         181        0      3 Sage~ fema~    NA     8     2 CA. 2~  69.6
+##  3         202        0      3 Sage~ male     NA     8     2 CA. 2~  69.6
+##  4         325        0      3 Sage~ male     NA     8     2 CA. 2~  69.6
+##  5         793        0      3 Sage~ fema~    NA     8     2 CA. 2~  69.6
+##  6         847        0      3 Sage~ male     NA     8     2 CA. 2~  69.6
+##  7         864        0      3 "Sag~ fema~    NA     8     2 CA. 2~  69.6
+##  8          75        1      3 Bing~ male     32     0     0 1601    56.5
+##  9         170        0      3 Ling~ male     28     0     0 1601    56.5
+## 10         510        1      3 Lang~ male     26     0     0 1601    56.5
+## # ... with 481 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Oldest male on the Titanic?]
+
+
+```r
+all_male &lt;- filter(titanic, Sex == "male")
+arrange(all_male, -Age)
+```
+
+```
+## # A tibble: 577 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         631        1      1 Bark~ male   80       0     0 27042  30   
+##  2         852        0      3 Sven~ male   74       0     0 347060  7.78
+##  3          97        0      1 Gold~ male   71       0     0 PC 17~ 34.7 
+##  4         494        0      1 Arta~ male   71       0     0 PC 17~ 49.5 
+##  5         117        0      3 Conn~ male   70.5     0     0 370369  7.75
+##  6         673        0      2 Mitc~ male   70       0     0 C.A. ~ 10.5 
+##  7         746        0      1 Cros~ male   70       1     1 WE/P ~ 71   
+##  8          34        0      2 Whea~ male   66       0     0 C.A. ~ 10.5 
+##  9          55        0      1 Ostb~ male   65       0     1 113509 62.0 
+## 10         281        0      3 Duan~ male   65       0     0 336439  7.75
+## # ... with 567 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Oldest female on the Titanic?]
+
+
+```r
+all_female &lt;- filter(titanic, Sex == "female")
+arrange(all_female, -Age)
+```
+
+```
+## # A tibble: 314 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket   Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt;
+##  1         276        1      1 Andr~ fema~    63     1     0 13502   78.0 
+##  2         484        1      3 Turk~ fema~    63     0     0 4134     9.59
+##  3         830        1      1 Ston~ fema~    62     0     0 113572  80   
+##  4         367        1      1 Warr~ fema~    60     1     0 110813  75.2 
+##  5          12        1      1 Bonn~ fema~    58     0     0 113783  26.6 
+##  6         196        1      1 Lure~ fema~    58     0     0 PC 17~ 147.  
+##  7         269        1      1 Grah~ fema~    58     0     1 PC 17~ 153.  
+##  8         773        0      2 Mack~ fema~    57     0     0 S.O./~  10.5 
+##  9         880        1      1 Pott~ fema~    56     0     1 11767   83.2 
+## 10          16        1      2 Hewl~ fema~    55     0     0 248706  16   
+## # ... with 304 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: inverse, center, middle
+
+# `mutate()` (in the `dplyr` package)
+
+### *Change or cause to change in form or nature.*
+
+&lt;img src="https://media.giphy.com/media/3oEdv4bP4Ahh3mj4s0/giphy.gif" width="50%" /&gt;
+
+---
+
+class: big-font
+
+.blue[Passenger age in months.]
+
+
+```r
+mutate(titanic, Age = Age * 12)
+```
+
+```
+## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 Brau~ male    264     1     0 A/5 2~  7.25
+##  2           2        1      1 Cumi~ fema~   456     1     0 PC 17~ 71.3 
+##  3           3        1      3 Heik~ fema~   312     0     0 STON/~  7.92
+##  4           4        1      1 Futr~ fema~   420     1     0 113803 53.1 
+##  5           5        0      3 Alle~ male    420     0     0 373450  8.05
+##  6           6        0      3 Mora~ male     NA     0     0 330877  8.46
+##  7           7        0      1 McCa~ male    648     0     0 17463  51.9 
+##  8           8        0      3 Pals~ male     24     3     1 349909 21.1 
+##  9           9        1      3 John~ fema~   324     0     2 347742 11.1 
+## 10          10        1      2 Nass~ fema~   168     1     0 237736 30.1 
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Passenger age in days.]
+
+
+```r
+mutate(titanic, Age = Age * 365)
+```
+
+```
+## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 Brau~ male   8030     1     0 A/5 2~  7.25
+##  2           2        1      1 Cumi~ fema~ 13870     1     0 PC 17~ 71.3 
+##  3           3        1      3 Heik~ fema~  9490     0     0 STON/~  7.92
+##  4           4        1      1 Futr~ fema~ 12775     1     0 113803 53.1 
+##  5           5        0      3 Alle~ male  12775     0     0 373450  8.05
+##  6           6        0      3 Mora~ male     NA     0     0 330877  8.46
+##  7           7        0      1 McCa~ male  19710     0     0 17463  51.9 
+##  8           8        0      3 Pals~ male    730     3     1 349909 21.1 
+##  9           9        1      3 John~ fema~  9855     0     2 347742 11.1 
+## 10          10        1      2 Nass~ fema~  5110     1     0 237736 30.1 
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Passenger names in upper case.]
+
+
+```r
+mutate(titanic, Name = toupper(Name))
+```
+
+```
+## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 BRAU~ male     22     1     0 A/5 2~  7.25
+##  2           2        1      1 CUMI~ fema~    38     1     0 PC 17~ 71.3 
+##  3           3        1      3 HEIK~ fema~    26     0     0 STON/~  7.92
+##  4           4        1      1 FUTR~ fema~    35     1     0 113803 53.1 
+##  5           5        0      3 ALLE~ male     35     0     0 373450  8.05
+##  6           6        0      3 MORA~ male     NA     0     0 330877  8.46
+##  7           7        0      1 MCCA~ male     54     0     0 17463  51.9 
+##  8           8        0      3 PALS~ male      2     3     1 349909 21.1 
+##  9           9        1      3 JOHN~ fema~    27     0     2 347742 11.1 
+## 10          10        1      2 NASS~ fema~    14     1     0 237736 30.1 
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Passenger names in lower case.]
+
+
+```r
+mutate(titanic, Name = tolower(Name))
+```
+
+```
+## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 brau~ male     22     1     0 A/5 2~  7.25
+##  2           2        1      1 cumi~ fema~    38     1     0 PC 17~ 71.3 
+##  3           3        1      3 heik~ fema~    26     0     0 STON/~  7.92
+##  4           4        1      1 futr~ fema~    35     1     0 113803 53.1 
+##  5           5        0      3 alle~ male     35     0     0 373450  8.05
+##  6           6        0      3 mora~ male     NA     0     0 330877  8.46
+##  7           7        0      1 mcca~ male     54     0     0 17463  51.9 
+##  8           8        0      3 pals~ male      2     3     1 349909 21.1 
+##  9           9        1      3 john~ fema~    27     0     2 347742 11.1 
+## 10          10        1      2 nass~ fema~    14     1     0 237736 30.1 
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Convert Fares in USD.]
+
+
+```r
+library(quantmod)
+getQuote("GBPUSD=X")
+```
+
+```
+                  Trade Time     Last     Change  % Change     Open
+GBPUSD=X 2018-09-23 23:54:00 1.307839 -0.0195123 -1.470012 1.307839
+             High     Low Volume
+GBPUSD=X 1.308969 1.30625      0
+```
+
+```r
+getQuote("GBPUSD=X")$Last
+```
+
+```
+[1] 1.307839
+```
+
+---
+
+class: big-font
+
+.blue[Convert Fares in USD]
+
+
+```r
+exch_rate &lt;- getQuote("GBPUSD=X")$Last
+mutate(titanic, Fare = exch_rate * Fare)
+```
+
+```
+## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  9.48
+##  2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 93.2 
+##  3           3        1      3 Heik~ fema~    26     0     0 STON/~ 10.4 
+##  4           4        1      1 Futr~ fema~    35     1     0 113803 69.4 
+##  5           5        0      3 Alle~ male     35     0     0 373450 10.5 
+##  6           6        0      3 Mora~ male     NA     0     0 330877 11.1 
+##  7           7        0      1 McCa~ male     54     0     0 17463  67.8 
+##  8           8        0      3 Pals~ male      2     3     1 349909 27.6 
+##  9           9        1      3 John~ fema~    27     0     2 347742 14.6 
+## 10          10        1      2 Nass~ fema~    14     1     0 237736 39.3 
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Family size of each passenger.]
+
+
+```r
+mutate(titanic, FamilyTotal = SibSp + Parch)
+```
+
+```
+## # A tibble: 891 x 13
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  7.25
+##  2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 71.3 
+##  3           3        1      3 Heik~ fema~    26     0     0 STON/~  7.92
+##  4           4        1      1 Futr~ fema~    35     1     0 113803 53.1 
+##  5           5        0      3 Alle~ male     35     0     0 373450  8.05
+##  6           6        0      3 Mora~ male     NA     0     0 330877  8.46
+##  7           7        0      1 McCa~ male     54     0     0 17463  51.9 
+##  8           8        0      3 Pals~ male      2     3     1 349909 21.1 
+##  9           9        1      3 John~ fema~    27     0     2 347742 11.1 
+## 10          10        1      2 Nass~ fema~    14     1     0 237736 30.1 
+## # ... with 881 more rows, and 3 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;, FamilyTotal &lt;int&gt;
+```
+
+---
+
+class: middle, center
+
+# `filter()` + `arrange()` + `mutate()`
+
+&lt;img src="https://media.giphy.com/media/3oKIPjzfv0sI2p7fDW/giphy.gif" width="50%" /&gt;
+
+
+---
+
+class: big-font
+
+.blue[Biggest family on the Titanic.]
+
+
+```r
+titanic_family &lt;- mutate(titanic, FamilyTotal = SibSp + Parch)
+arrange(titanic_family, -FamilyTotal)
+```
+
+```
+## # A tibble: 891 x 13
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         160        0      3 Sage~ male     NA     8     2 CA. 2~  69.6
+##  2         181        0      3 Sage~ fema~    NA     8     2 CA. 2~  69.6
+##  3         202        0      3 Sage~ male     NA     8     2 CA. 2~  69.6
+##  4         325        0      3 Sage~ male     NA     8     2 CA. 2~  69.6
+##  5         793        0      3 Sage~ fema~    NA     8     2 CA. 2~  69.6
+##  6         847        0      3 Sage~ male     NA     8     2 CA. 2~  69.6
+##  7         864        0      3 "Sag~ fema~    NA     8     2 CA. 2~  69.6
+##  8          60        0      3 Good~ male     11     5     2 CA 21~  46.9
+##  9          72        0      3 Good~ fema~    16     5     2 CA 21~  46.9
+## 10         387        0      3 Good~ male      1     5     2 CA 21~  46.9
+## # ... with 881 more rows, and 3 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;, FamilyTotal &lt;int&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Biggest family from Cherbourg.]
+
+
+```r
+titanic_family &lt;- mutate(titanic, FamilyTotal = SibSp + Parch) # Not required again!
+cherbourg_passengers &lt;- filter(titanic_family, Embarked == "C")
+arrange(cherbourg_passengers, -FamilyTotal)
+```
+
+```
+## # A tibble: 168 x 13
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         312        1      1 Ryer~ fema~ 18        2     2 PC 17~ 262. 
+##  2         743        1      1 "Rye~ fema~ 21        2     2 PC 17~ 262. 
+##  3          44        1      2 Laro~ fema~  3        1     2 SC/Pa~  41.6
+##  4         449        1      3 Bacl~ fema~  5        2     1 2666    19.3
+##  5         470        1      3 Bacl~ fema~  0.75     2     1 2666    19.3
+##  6         609        1      2 Laro~ fema~ 22        1     2 SC/Pa~  41.6
+##  7         645        1      3 Bacl~ fema~  0.75     2     1 2666    19.3
+##  8         686        0      2 Laro~ male  25        1     2 SC/Pa~  41.6
+##  9         859        1      3 Bacl~ fema~ 24        0     3 2666    19.3
+## 10          49        0      3 Sama~ male  NA        2     0 2662    21.7
+## # ... with 158 more rows, and 3 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;, FamilyTotal &lt;int&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Biggest family in class 1.]
+
+
+```r
+class_1 &lt;- filter(titanic, Pclass == 1)
+class_1_family &lt;- mutate(class_1, FamilyTotal = SibSp + Parch)
+arrange(class_1_family, -FamilyTotal)
+```
+
+```
+## # A tibble: 216 x 13
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1          28        0      1 Fort~ male  19        3     2 19950   263 
+##  2          89        1      1 Fort~ fema~ 23        3     2 19950   263 
+##  3         342        1      1 Fort~ fema~ 24        3     2 19950   263 
+##  4         439        0      1 Fort~ male  64        1     4 19950   263 
+##  5         312        1      1 Ryer~ fema~ 18        2     2 PC 17~  262.
+##  6         743        1      1 "Rye~ fema~ 21        2     2 PC 17~  262.
+##  7         298        0      1 Alli~ fema~  2        1     2 113781  152.
+##  8         306        1      1 Alli~ male   0.92     1     2 113781  152.
+##  9         391        1      1 Cart~ male  36        1     2 113760  120 
+## 10         436        1      1 Cart~ fema~ 14        1     2 113760  120 
+## # ... with 206 more rows, and 3 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;, FamilyTotal &lt;int&gt;
+```
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
