@@ -1,0 +1,16 @@
+---
+title: "Louisiana Tech Data Science Seminar"
+author: "Ghislain Nono Gueye, Ph.D."
+date: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Presentations
+
+[1- Data Science Today](Presentations/intro_presentation/index.html)
+
+[2- Titanic: Beyond the Movie](Presentations/titanic_beyond_the_movie/index.html)
