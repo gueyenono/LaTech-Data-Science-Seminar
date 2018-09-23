@@ -11,6 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Presentations
 
-[1- Data Science Today](Presentations/intro_presentation/index.html)
+[1- Data Science Today](/Presentations/intro_presentation/index.html)
 
-[2- Titanic: Beyond the Movie](Presentations/titanic_beyond_the_movie/index.html)
+[2- Titanic: Beyond the Movie](/Presentations/titanic_beyond_the_movie/index.html)
