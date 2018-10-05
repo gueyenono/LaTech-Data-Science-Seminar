@@ -1,0 +1,21 @@
+---
+title: "Fastfood Nutrition"
+author: "Ghislain Nono Gueye, Ph.D."
+date: ""
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Useful packages
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+
+## Data import
