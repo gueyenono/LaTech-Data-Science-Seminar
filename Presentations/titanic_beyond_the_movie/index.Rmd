@@ -754,3 +754,589 @@ class_1_family <- mutate(class_1, FamilyTotal = SibSp + Parch)
 arrange(class_1_family, -FamilyTotal)
 ```
 
+---
+
+class: inverse, center, middle
+
+# The pipe operator
+
+# %>%
+
+### percent - greater than - percent
+
+---
+
+class: big-font, center, middle
+
+# The pipe operator `%>%` is very useful for .blue[chained operations].
+
+--
+
+# .red[f(x,y)]
+
+becomes
+
+# .red[x %>% f(y)]
+
+---
+
+class: big-font
+
+.blue[The women on the Titanic]
+
+```{r}
+filter(titanic, Sex == "female")
+```
+
+---
+
+class: big-font
+
+.blue[The women on the Titanic]
+
+filter(.red[titanic] , Sex == "female")
+
+<br/> <br/> <br/>
+
+--
+
+.red[titanic] %>% filter(Sex == "female")
+
+---
+
+class: big-font
+
+```{r}
+titanic %>% filter(Sex == "female")
+```
+
+---
+
+class: big-font
+
+.blue[Oldest male on the Titanic]
+
+all_male <- filter(.red[titanic], Sex == "male")
+
+arrange(.red[all_male], -Age)
+
+<br/> <br/> <br/>
+
+--
+
+titanic %>%
+
+filter(Sex == "male") %>%
+
+arrange(-Age)
+
+---
+
+class: big-font
+
+```{r}
+titanic %>%
+  filter(Sex == "male") %>%
+  arrange(-Age)
+```
+
+---
+
+class: big-font
+
+.blue[Biggest family in class 1.]
+
+class_1 <- filter(.red[titanic], Pclass == 1)
+
+class_1_family <- mutate(.red[class_1], FamilyTotal = SibSp + Parch)
+
+arrange(.red[class_1_family], -FamilyTotal)
+
+<br/>
+
+--
+
+titanic %>%
+
+filter(Pclass == 1) %>%
+
+mutate(FamilyTotal = SibSp + Parch) %>%
+
+arrange(-FamilyTotal)
+
+---
+
+class: big-font
+
+```{r}
+titanic %>%
+filter(Pclass == 1) %>%
+mutate(FamilyTotal = SibSp + Parch) %>%
+arrange(-FamilyTotal)
+```
+
+
+---
+
+class: big-font
+
+# Let's practice
+
+.blue[Highest fare paid by a female from Cherbourg.]
+
+--
+
+```{r}
+titanic %>%
+  filter(Sex == "female", Embarked == "C") %>%
+  arrange(-Fare)
+```
+
+---
+
+class: big-font
+
+# Let's practice
+
+.blue[Biggest family in class 2 from Queenstown.]
+
+--
+
+```{r}
+titanic %>%
+  filter(Pclass == 2, Embarked == "Q") %>%
+  mutate(FamilyTotal = SibSp + Parch) %>%
+  arrange(-FamilyTotal)
+```
+
+---
+
+class: inverse, middle, center
+
+## `summarize()` (in the `dplyr` package)
+
+### *Give a brief statement of the main points.*
+
+```{r, echo = FALSE, out.width = "70%"}
+knitr::include_graphics("https://media.giphy.com/media/l4JzbBLmrsJXYOoY8/giphy.gif")
+```
+
+---
+
+class: big-font
+
+.blue[Average age of Titanic passengers.]
+
+```{r}
+titanic %>%
+  summarize(avg_Age = mean(Age))
+```
+
+---
+
+class: big-font
+
+.blue[Average average of Titanic passengers.]
+
+```{r}
+titanic %>%
+  summarize(avg_Age = mean(Age, na.rm = TRUE))
+```
+
+---
+
+class: big-font
+
+.blue[Average fare paid by a passenger on the Titanic.]
+
+```{r}
+titanic %>%
+  summarize(avg_Fare = mean(Fare, na.rm = TRUE))
+```
+
+---
+
+class: big-font
+
+.blue[Average age and average fare.]
+
+```{r}
+titanic %>%
+  summarize(avg_Age = mean(Age, na.rm = TRUE),
+            avg_Fare = mean(Fare, na.rm = TRUE))
+```
+
+---
+
+class: big-font
+
+.blue[Titanic's revenue generated from class 1.]
+
+```{r}
+titanic %>%
+  filter(Pclass == 1) %>%
+  summarize(revenue_class_1 = sum(Fare, na.rm = TRUE))
+```
+
+--
+
+.blue[Titanic's revenue generated from Queenstown.]
+
+```{r}
+titanic %>%
+  filter(Embarked == "Q") %>%
+  summarize(revenue_Q = sum(Fare, na.rm = TRUE))
+```
+
+
+---
+
+class: big-font
+
+.blue[The mean age of a .red[female] in class 1.]
+
+```{r}
+titanic %>%
+  filter(Sex == "female", Pclass == 1) %>%
+  summarize(avg_Age = mean(Age, na.rm = TRUE))
+```
+
+--
+
+.blue[The mean age of a .red[male] in class 1.]
+
+```{r}
+titanic %>%
+  filter(Sex == "male", Pclass == 1) %>%
+  summarize(avg_Age = mean(Age, na.rm = TRUE))
+```
+
+---
+
+.blue[Average family size for .red[class 1] passengers from Southampton.]
+
+```{r}
+titanic %>%
+  filter(Embarked == "S", Pclass == 1) %>%
+  mutate(FamilyTotal = SibSp + Parch) %>%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+--
+
+.blue[Average family size for .red[class 2] passengers from Southampton.]
+
+```{r}
+titanic %>%
+  filter(Embarked == "S", Pclass == 2) %>%
+  mutate(FamilyTotal = SibSp + Parch) %>%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+---
+
+You may also want to find out:
+
+- the revenue generated from Southampton and Cherbourg.
+
+- the average family size of class 3 passengers from Southampton.
+
+- and the average family size for each class and for each of the 2 other cities.
+
+--
+
+.center[.red[.very-big-font[That would be too much code!]]]
+
+.center[
+```{r, echo = FALSE, out.width = "50%"}
+knitr::include_graphics("https://media.giphy.com/media/10FHR5A4cXqVrO/giphy.gif")
+```
+]
+---
+
+```{r, eval = FALSE}
+titanic %>%
+  filter(Embarked == "S", Pclass == 3) %>%
+  mutate(FamilyTotal = SibSp + Parch) %>%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+```{r, eval = FALSE}
+titanic %>%
+  filter(Embarked == "Q", Pclass == 1) %>%
+  mutate(FamilyTotal = SibSp + Parch) %>%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+```{r, eval = FALSE}
+titanic %>%
+  filter(Embarked == "Q", Pclass == 2) %>%
+  mutate(FamilyTotal = SibSp + Parch) %>%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+```{r, eval = FALSE}
+titanic %>%
+  filter(Embarked == "Q", Pclass == 3) %>%
+  mutate(FamilyTotal = SibSp + Parch) %>%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+.red[More code chunks not showed!]
+
+---
+
+class: very-big-font, center, middle
+
+Please, don't run away yet!!!
+
+```{r, echo = FALSE, out.width = "90%"}
+knitr::include_graphics("https://media.giphy.com/media/akcjGuTUohuV2/giphy.gif")
+```
+
+---
+
+class: inverse, middle, center
+
+## `group_by()` (in the `dplyr` package)
+
+### *put together or place in a group or groups.*
+
+---
+
+class: big-font
+
+.red[`group_by()` only] = .blue[no (real) discernable impact.]
+
+```{r}
+titanic %>%
+  group_by(Pclass)
+```
+
+--
+
+.red[It must be used with `summarize()`!]
+
+---
+
+class: inverse, middle, center
+
+## `group_by()` + `summarize()`
+
+---
+
+class: big-font
+
+.blue[Mean age in each class.]
+
+```{r}
+titanic %>%
+  group_by(Pclass) %>%
+  summarize(avg_age = mean(Age, na.rm = TRUE))
+```
+
+---
+
+class: big-font
+
+.blue[Revenue generated from each city.]
+
+```{r}
+titanic %>%
+  group_by(Embarked) %>%
+  summarize(revenue = sum(Fare, na.rm = TRUE))
+```
+
+---
+
+class: big-font
+
+.blue[Mean fare paid by class.]
+
+```{r}
+titanic %>%
+  group_by(Pclass) %>%
+  summarize(avg_Fare = mean(Fare, na.rm = TRUE))
+```
+
+
+---
+
+class: big-font
+
+.blue[Average family size from each of the 3 cities.]
+
+```{r}
+titanic %>%
+  mutate(FamilyTotal = SibSp + Parch) %>%
+  group_by(Embarked) %>%
+  summarize(avg_family_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+---
+
+class: big-font
+
+## The `n()` function
+
+- Calculates the number of elements in a group.
+
+- Can only be used inside `summarize()`, `mutate()` and `filter()`.
+
+--
+
+class: big-font
+
+.blue[How many passengers were there in each class?]
+
+```{r}
+titanic %>%
+  group_by(Pclass) %>%
+  summarize(count = n())
+```
+
+---
+
+class: big-font
+
+.blue[How many passengers were there from each city?]
+
+```{r}
+titanic %>%
+  group_by(Embarked) %>%
+  summarize(count = n())
+```
+
+
+---
+
+class: big-font
+
+.blue[How many males and females were there on the Titanic?]
+
+```{r}
+titanic %>%
+  group_by(Sex) %>%
+  summarize(count = n())
+```
+
+---
+
+class: big-font
+
+.blue[How many people survived/died?]
+
+```{r}
+titanic %>%
+  group_by(Survived) %>%
+  summarize(count = n())
+```
+
+---
+
+class: inverse, middle, center
+
+## Now, the million dollar question!
+
+--
+
+## Could you buy safety with money on the titanic?
+
+---
+
+class: big-font
+
+.blue[How many passengers were there in each class?]
+
+```{r}
+titanic %>%
+  group_by(Pclass) %>%
+  summarize(count = n())
+```
+
+---
+
+class: big-font
+
+.blue[How many passengers were there in each class?]
+
+```{r, eval = FALSE}
+titanic %>%
+  group_by(Pclass) %>%
+  summarize(count = n())
+```
+
+.blue[What was the proportion of passengers in each class?]
+
+```{r}
+titanic %>%
+  group_by(Pclass) %>%
+  summarize(count = n()) %>%
+  mutate(class_proportion = count / sum(count))
+```
+
+---
+
+class: big-font
+
+.blue[How many survivors were there in each class?]
+
+```{r}
+titanic %>%
+  filter(Survived == 1) %>%
+  group_by(Pclass) %>%
+  summarize(count = n())
+```
+
+---
+
+class: big-font
+
+.blue[How many survivors were there in each class?]
+
+```{r, eval = FALSE}
+titanic %>%
+  filter(Survived == 1) %>%
+  group_by(Pclass) %>%
+  summarize(count = n())
+```
+
+.blue[what was the survival rate in each class?]
+
+```{r}
+titanic %>%
+  filter(Survived == 1) %>%
+  group_by(Pclass) %>%
+  summarize(count = n()) %>%
+  mutate(survival_rate = count / sum(count)) %>%
+  arrange(-survival_rate)
+```
+
+---
+
+class: big-font
+
+### .red[Nested summaries!]
+
+.blue[The average fare paid by gender and by class].
+
+```{r}
+titanic %>%
+  group_by(Pclass, Sex) %>%
+  summarize(avg_Fare = mean(Fare, na.rm = TRUE))
+```
+
+---
+
+class: big-font
+
+.blue[The number and proportion of survivors by gender and by class]
+
+```{r}
+titanic %>%
+  filter(Survived == 1) %>%
+  group_by(Pclass, Sex) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count / sum(count))
+```
+

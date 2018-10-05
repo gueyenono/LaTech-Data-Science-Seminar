@@ -273,7 +273,7 @@ function (formula, data, subset, weights, na.action, method = "qr",
         z$qr &lt;- NULL
     z
 }
-&lt;bytecode: 0x000000000a24e6e0&gt;
+&lt;bytecode: 0x0000000009bcb570&gt;
 &lt;environment: namespace:stats&gt;
 ```
 
@@ -1275,10 +1275,10 @@ getQuote("GBPUSD=X")
 ```
 
 ```
-                  Trade Time     Last     Change  % Change     Open
-GBPUSD=X 2018-09-23 23:54:00 1.307839 -0.0195123 -1.470012 1.307839
-             High     Low Volume
-GBPUSD=X 1.308969 1.30625      0
+                  Trade Time     Last        Change    % Change     Open
+GBPUSD=X 2018-10-05 04:54:00 1.301219 -0.0008471012 -0.06505625 1.302066
+             High      Low Volume
+GBPUSD=X 1.303017 1.301219      0
 ```
 
 ```r
@@ -1286,7 +1286,7 @@ getQuote("GBPUSD=X")$Last
 ```
 
 ```
-[1] 1.307839
+[1] 1.301219
 ```
 
 ---
@@ -1305,16 +1305,16 @@ mutate(titanic, Fare = exch_rate * Fare)
 ## # A tibble: 891 x 12
 ##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
 ##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
-##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  9.48
-##  2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 93.2 
-##  3           3        1      3 Heik~ fema~    26     0     0 STON/~ 10.4 
-##  4           4        1      1 Futr~ fema~    35     1     0 113803 69.4 
+##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  9.43
+##  2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 92.8 
+##  3           3        1      3 Heik~ fema~    26     0     0 STON/~ 10.3 
+##  4           4        1      1 Futr~ fema~    35     1     0 113803 69.1 
 ##  5           5        0      3 Alle~ male     35     0     0 373450 10.5 
-##  6           6        0      3 Mora~ male     NA     0     0 330877 11.1 
-##  7           7        0      1 McCa~ male     54     0     0 17463  67.8 
-##  8           8        0      3 Pals~ male      2     3     1 349909 27.6 
-##  9           9        1      3 John~ fema~    27     0     2 347742 14.6 
-## 10          10        1      2 Nass~ fema~    14     1     0 237736 39.3 
+##  6           6        0      3 Mora~ male     NA     0     0 330877 11.0 
+##  7           7        0      1 McCa~ male     54     0     0 17463  67.5 
+##  8           8        0      3 Pals~ male      2     3     1 349909 27.4 
+##  9           9        1      3 John~ fema~    27     0     2 347742 14.5 
+## 10          10        1      2 Nass~ fema~    14     1     0 237736 39.1 
 ## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
 ## #   Embarked &lt;chr&gt;
 ```
@@ -1447,6 +1447,947 @@ arrange(class_1_family, -FamilyTotal)
 ## 10         436        1      1 Cart~ fema~ 14        1     2 113760  120 
 ## # ... with 206 more rows, and 3 more variables: Cabin &lt;chr&gt;,
 ## #   Embarked &lt;chr&gt;, FamilyTotal &lt;int&gt;
+```
+
+---
+
+class: inverse, center, middle
+
+# The pipe operator
+
+# %&gt;%
+
+### percent - greater than - percent
+
+---
+
+class: big-font, center, middle
+
+# The pipe operator `%&gt;%` is very useful for .blue[chained operations].
+
+--
+
+# .red[f(x,y)]
+
+becomes
+
+# .red[x %&gt;% f(y)]
+
+---
+
+class: big-font
+
+.blue[The women on the Titanic]
+
+
+```r
+filter(titanic, Sex == "female")
+```
+
+```
+## # A tibble: 314 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 71.3 
+##  2           3        1      3 Heik~ fema~    26     0     0 STON/~  7.92
+##  3           4        1      1 Futr~ fema~    35     1     0 113803 53.1 
+##  4           9        1      3 John~ fema~    27     0     2 347742 11.1 
+##  5          10        1      2 Nass~ fema~    14     1     0 237736 30.1 
+##  6          11        1      3 Sand~ fema~     4     1     1 PP 95~ 16.7 
+##  7          12        1      1 Bonn~ fema~    58     0     0 113783 26.6 
+##  8          15        0      3 Vest~ fema~    14     0     0 350406  7.85
+##  9          16        1      2 Hewl~ fema~    55     0     0 248706 16   
+## 10          19        0      3 Vand~ fema~    31     1     0 345763 18   
+## # ... with 304 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[The women on the Titanic]
+
+filter(.red[titanic] , Sex == "female")
+
+&lt;br/&gt; &lt;br/&gt; &lt;br/&gt;
+
+--
+
+.red[titanic] %&gt;% filter(Sex == "female")
+
+---
+
+class: big-font
+
+
+```r
+titanic %&gt;% filter(Sex == "female")
+```
+
+```
+## # A tibble: 314 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 71.3 
+##  2           3        1      3 Heik~ fema~    26     0     0 STON/~  7.92
+##  3           4        1      1 Futr~ fema~    35     1     0 113803 53.1 
+##  4           9        1      3 John~ fema~    27     0     2 347742 11.1 
+##  5          10        1      2 Nass~ fema~    14     1     0 237736 30.1 
+##  6          11        1      3 Sand~ fema~     4     1     1 PP 95~ 16.7 
+##  7          12        1      1 Bonn~ fema~    58     0     0 113783 26.6 
+##  8          15        0      3 Vest~ fema~    14     0     0 350406  7.85
+##  9          16        1      2 Hewl~ fema~    55     0     0 248706 16   
+## 10          19        0      3 Vand~ fema~    31     1     0 345763 18   
+## # ... with 304 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Oldest male on the Titanic]
+
+all_male &lt;- filter(.red[titanic], Sex == "male")
+
+arrange(.red[all_male], -Age)
+
+&lt;br/&gt; &lt;br/&gt; &lt;br/&gt;
+
+--
+
+titanic %&gt;%
+
+filter(Sex == "male") %&gt;%
+
+arrange(-Age)
+
+---
+
+class: big-font
+
+
+```r
+titanic %&gt;%
+  filter(Sex == "male") %&gt;%
+  arrange(-Age)
+```
+
+```
+## # A tibble: 577 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         631        1      1 Bark~ male   80       0     0 27042  30   
+##  2         852        0      3 Sven~ male   74       0     0 347060  7.78
+##  3          97        0      1 Gold~ male   71       0     0 PC 17~ 34.7 
+##  4         494        0      1 Arta~ male   71       0     0 PC 17~ 49.5 
+##  5         117        0      3 Conn~ male   70.5     0     0 370369  7.75
+##  6         673        0      2 Mitc~ male   70       0     0 C.A. ~ 10.5 
+##  7         746        0      1 Cros~ male   70       1     1 WE/P ~ 71   
+##  8          34        0      2 Whea~ male   66       0     0 C.A. ~ 10.5 
+##  9          55        0      1 Ostb~ male   65       0     1 113509 62.0 
+## 10         281        0      3 Duan~ male   65       0     0 336439  7.75
+## # ... with 567 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+.blue[Biggest family in class 1.]
+
+class_1 &lt;- filter(.red[titanic], Pclass == 1)
+
+class_1_family &lt;- mutate(.red[class_1], FamilyTotal = SibSp + Parch)
+
+arrange(.red[class_1_family], -FamilyTotal)
+
+&lt;br/&gt;
+
+--
+
+titanic %&gt;%
+
+filter(Pclass == 1) %&gt;%
+
+mutate(FamilyTotal = SibSp + Parch) %&gt;%
+
+arrange(-FamilyTotal)
+
+---
+
+class: big-font
+
+
+```r
+titanic %&gt;%
+filter(Pclass == 1) %&gt;%
+mutate(FamilyTotal = SibSp + Parch) %&gt;%
+arrange(-FamilyTotal)
+```
+
+```
+## # A tibble: 216 x 13
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1          28        0      1 Fort~ male  19        3     2 19950   263 
+##  2          89        1      1 Fort~ fema~ 23        3     2 19950   263 
+##  3         342        1      1 Fort~ fema~ 24        3     2 19950   263 
+##  4         439        0      1 Fort~ male  64        1     4 19950   263 
+##  5         312        1      1 Ryer~ fema~ 18        2     2 PC 17~  262.
+##  6         743        1      1 "Rye~ fema~ 21        2     2 PC 17~  262.
+##  7         298        0      1 Alli~ fema~  2        1     2 113781  152.
+##  8         306        1      1 Alli~ male   0.92     1     2 113781  152.
+##  9         391        1      1 Cart~ male  36        1     2 113760  120 
+## 10         436        1      1 Cart~ fema~ 14        1     2 113760  120 
+## # ... with 206 more rows, and 3 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;, FamilyTotal &lt;int&gt;
+```
+
+
+---
+
+class: big-font
+
+# Let's practice
+
+.blue[Highest fare paid by a female from Cherbourg.]
+
+--
+
+
+```r
+titanic %&gt;%
+  filter(Sex == "female", Embarked == "C") %&gt;%
+  arrange(-Fare)
+```
+
+```
+## # A tibble: 73 x 12
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1         259        1      1 Ward~ fema~    35     0     0 PC 17~  512.
+##  2         312        1      1 Ryer~ fema~    18     2     2 PC 17~  262.
+##  3         743        1      1 "Rye~ fema~    21     2     2 PC 17~  262.
+##  4         300        1      1 Baxt~ fema~    50     0     1 PC 17~  248.
+##  5         381        1      1 Bido~ fema~    42     0     0 PC 17~  228.
+##  6         701        1      1 Asto~ fema~    18     1     0 PC 17~  228.
+##  7         717        1      1 Endr~ fema~    38     0     0 PC 17~  228.
+##  8          32        1      1 Spen~ fema~    NA     1     0 PC 17~  147.
+##  9         196        1      1 Lure~ fema~    58     0     0 PC 17~  147.
+## 10         326        1      1 Youn~ fema~    36     0     0 PC 17~  136.
+## # ... with 63 more rows, and 2 more variables: Cabin &lt;chr&gt;, Embarked &lt;chr&gt;
+```
+
+---
+
+class: big-font
+
+# Let's practice
+
+.blue[Biggest family in class 2 from Queenstown.]
+
+--
+
+
+```r
+titanic %&gt;%
+  filter(Pclass == 2, Embarked == "Q") %&gt;%
+  mutate(FamilyTotal = SibSp + Parch) %&gt;%
+  arrange(-FamilyTotal)
+```
+
+```
+## # A tibble: 3 x 13
+##   PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##         &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+## 1         304        1      2 Kean~ fema~    NA     0     0 226593  12.4
+## 2         323        1      2 Slay~ fema~    30     0     0 234818  12.4
+## 3         627        0      2 Kirk~ male     57     0     0 219533  12.4
+## # ... with 3 more variables: Cabin &lt;chr&gt;, Embarked &lt;chr&gt;,
+## #   FamilyTotal &lt;int&gt;
+```
+
+---
+
+class: inverse, middle, center
+
+## `summarize()` (in the `dplyr` package)
+
+### *Give a brief statement of the main points.*
+
+&lt;img src="https://media.giphy.com/media/l4JzbBLmrsJXYOoY8/giphy.gif" width="70%" /&gt;
+
+---
+
+class: big-font
+
+.blue[Average age of Titanic passengers.]
+
+
+```r
+titanic %&gt;%
+  summarize(avg_Age = mean(Age))
+```
+
+```
+## # A tibble: 1 x 1
+##   avg_Age
+##     &lt;dbl&gt;
+## 1      NA
+```
+
+---
+
+class: big-font
+
+.blue[Average average of Titanic passengers.]
+
+
+```r
+titanic %&gt;%
+  summarize(avg_Age = mean(Age, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 1
+##   avg_Age
+##     &lt;dbl&gt;
+## 1    29.7
+```
+
+---
+
+class: big-font
+
+.blue[Average fare paid by a passenger on the Titanic.]
+
+
+```r
+titanic %&gt;%
+  summarize(avg_Fare = mean(Fare, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 1
+##   avg_Fare
+##      &lt;dbl&gt;
+## 1     32.2
+```
+
+---
+
+class: big-font
+
+.blue[Average age and average fare.]
+
+
+```r
+titanic %&gt;%
+  summarize(avg_Age = mean(Age, na.rm = TRUE),
+            avg_Fare = mean(Fare, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 2
+##   avg_Age avg_Fare
+##     &lt;dbl&gt;    &lt;dbl&gt;
+## 1    29.7     32.2
+```
+
+---
+
+class: big-font
+
+.blue[Titanic's revenue generated from class 1.]
+
+
+```r
+titanic %&gt;%
+  filter(Pclass == 1) %&gt;%
+  summarize(revenue_class_1 = sum(Fare, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 1
+##   revenue_class_1
+##             &lt;dbl&gt;
+## 1          18177.
+```
+
+--
+
+.blue[Titanic's revenue generated from Queenstown.]
+
+
+```r
+titanic %&gt;%
+  filter(Embarked == "Q") %&gt;%
+  summarize(revenue_Q = sum(Fare, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 1
+##   revenue_Q
+##       &lt;dbl&gt;
+## 1     1022.
+```
+
+
+---
+
+class: big-font
+
+.blue[The mean age of a .red[female] in class 1.]
+
+
+```r
+titanic %&gt;%
+  filter(Sex == "female", Pclass == 1) %&gt;%
+  summarize(avg_Age = mean(Age, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 1
+##   avg_Age
+##     &lt;dbl&gt;
+## 1    34.6
+```
+
+--
+
+.blue[The mean age of a .red[male] in class 1.]
+
+
+```r
+titanic %&gt;%
+  filter(Sex == "male", Pclass == 1) %&gt;%
+  summarize(avg_Age = mean(Age, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 1
+##   avg_Age
+##     &lt;dbl&gt;
+## 1    41.3
+```
+
+---
+
+.blue[Average family size for .red[class 1] passengers from Southampton.]
+
+
+```r
+titanic %&gt;%
+  filter(Embarked == "S", Pclass == 1) %&gt;%
+  mutate(FamilyTotal = SibSp + Parch) %&gt;%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 1
+##   avg_fam_size
+##          &lt;dbl&gt;
+## 1        0.827
+```
+
+--
+
+.blue[Average family size for .red[class 2] passengers from Southampton.]
+
+
+```r
+titanic %&gt;%
+  filter(Embarked == "S", Pclass == 2) %&gt;%
+  mutate(FamilyTotal = SibSp + Parch) %&gt;%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 1
+##   avg_fam_size
+##          &lt;dbl&gt;
+## 1        0.762
+```
+
+---
+
+You may also want to find out:
+
+- the revenue generated from Southampton and Cherbourg.
+
+- the average family size of class 3 passengers from Southampton.
+
+- and the average family size for each class and for each of the 2 other cities.
+
+--
+
+.center[.red[.very-big-font[That would be too much code!]]]
+
+.center[
+&lt;img src="https://media.giphy.com/media/10FHR5A4cXqVrO/giphy.gif" width="50%" /&gt;
+]
+---
+
+
+```r
+titanic %&gt;%
+  filter(Embarked == "S", Pclass == 3) %&gt;%
+  mutate(FamilyTotal = SibSp + Parch) %&gt;%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+
+```r
+titanic %&gt;%
+  filter(Embarked == "Q", Pclass == 1) %&gt;%
+  mutate(FamilyTotal = SibSp + Parch) %&gt;%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+
+```r
+titanic %&gt;%
+  filter(Embarked == "Q", Pclass == 2) %&gt;%
+  mutate(FamilyTotal = SibSp + Parch) %&gt;%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+
+```r
+titanic %&gt;%
+  filter(Embarked == "Q", Pclass == 3) %&gt;%
+  mutate(FamilyTotal = SibSp + Parch) %&gt;%
+  summarize(avg_fam_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+.red[More code chunks not showed!]
+
+---
+
+class: very-big-font, center, middle
+
+Please, don't run away yet!!!
+
+&lt;img src="https://media.giphy.com/media/akcjGuTUohuV2/giphy.gif" width="90%" /&gt;
+
+---
+
+class: inverse, middle, center
+
+## `group_by()` (in the `dplyr` package)
+
+### *put together or place in a group or groups.*
+
+---
+
+class: big-font
+
+.red[`group_by()` only] = .blue[no (real) discernable impact.]
+
+
+```r
+titanic %&gt;%
+  group_by(Pclass)
+```
+
+```
+## # A tibble: 891 x 12
+## # Groups:   Pclass [3]
+##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  7.25
+##  2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 71.3 
+##  3           3        1      3 Heik~ fema~    26     0     0 STON/~  7.92
+##  4           4        1      1 Futr~ fema~    35     1     0 113803 53.1 
+##  5           5        0      3 Alle~ male     35     0     0 373450  8.05
+##  6           6        0      3 Mora~ male     NA     0     0 330877  8.46
+##  7           7        0      1 McCa~ male     54     0     0 17463  51.9 
+##  8           8        0      3 Pals~ male      2     3     1 349909 21.1 
+##  9           9        1      3 John~ fema~    27     0     2 347742 11.1 
+## 10          10        1      2 Nass~ fema~    14     1     0 237736 30.1 
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;
+```
+
+--
+
+.red[It must be used with `summarize()`!]
+
+---
+
+class: inverse, middle, center
+
+## `group_by()` + `summarize()`
+
+---
+
+class: big-font
+
+.blue[Mean age in each class.]
+
+
+```r
+titanic %&gt;%
+  group_by(Pclass) %&gt;%
+  summarize(avg_age = mean(Age, na.rm = TRUE))
+```
+
+```
+## # A tibble: 3 x 2
+##   Pclass avg_age
+##    &lt;int&gt;   &lt;dbl&gt;
+## 1      1    38.2
+## 2      2    29.9
+## 3      3    25.1
+```
+
+---
+
+class: big-font
+
+.blue[Revenue generated from each city.]
+
+
+```r
+titanic %&gt;%
+  group_by(Embarked) %&gt;%
+  summarize(revenue = sum(Fare, na.rm = TRUE))
+```
+
+```
+## # A tibble: 4 x 2
+##   Embarked revenue
+##   &lt;chr&gt;      &lt;dbl&gt;
+## 1 C         10072.
+## 2 Q          1022.
+## 3 S         17439.
+## 4 &lt;NA&gt;        160
+```
+
+---
+
+class: big-font
+
+.blue[Mean fare paid by class.]
+
+
+```r
+titanic %&gt;%
+  group_by(Pclass) %&gt;%
+  summarize(avg_Fare = mean(Fare, na.rm = TRUE))
+```
+
+```
+## # A tibble: 3 x 2
+##   Pclass avg_Fare
+##    &lt;int&gt;    &lt;dbl&gt;
+## 1      1     84.2
+## 2      2     20.7
+## 3      3     13.7
+```
+
+
+---
+
+class: big-font
+
+.blue[Average family size from each of the 3 cities.]
+
+
+```r
+titanic %&gt;%
+  mutate(FamilyTotal = SibSp + Parch) %&gt;%
+  group_by(Embarked) %&gt;%
+  summarize(avg_family_size = mean(FamilyTotal, na.rm = TRUE))
+```
+
+```
+## # A tibble: 4 x 2
+##   Embarked avg_family_size
+##   &lt;chr&gt;              &lt;dbl&gt;
+## 1 C                  0.75 
+## 2 Q                  0.597
+## 3 S                  0.984
+## 4 &lt;NA&gt;               0
+```
+
+---
+
+class: big-font
+
+## The `n()` function
+
+- Calculates the number of elements in a group.
+
+- Can only be used inside `summarize()`, `mutate()` and `filter()`.
+
+--
+
+class: big-font
+
+.blue[How many passengers were there in each class?]
+
+
+```r
+titanic %&gt;%
+  group_by(Pclass) %&gt;%
+  summarize(count = n())
+```
+
+```
+## # A tibble: 3 x 2
+##   Pclass count
+##    &lt;int&gt; &lt;int&gt;
+## 1      1   216
+## 2      2   184
+## 3      3   491
+```
+
+---
+
+class: big-font
+
+.blue[How many passengers were there from each city?]
+
+
+```r
+titanic %&gt;%
+  group_by(Embarked) %&gt;%
+  summarize(count = n())
+```
+
+```
+## # A tibble: 4 x 2
+##   Embarked count
+##   &lt;chr&gt;    &lt;int&gt;
+## 1 C          168
+## 2 Q           77
+## 3 S          644
+## 4 &lt;NA&gt;         2
+```
+
+
+---
+
+class: big-font
+
+.blue[How many males and females were there on the Titanic?]
+
+
+```r
+titanic %&gt;%
+  group_by(Sex) %&gt;%
+  summarize(count = n())
+```
+
+```
+## # A tibble: 2 x 2
+##   Sex    count
+##   &lt;chr&gt;  &lt;int&gt;
+## 1 female   314
+## 2 male     577
+```
+
+---
+
+class: big-font
+
+.blue[How many people survived/died?]
+
+
+```r
+titanic %&gt;%
+  group_by(Survived) %&gt;%
+  summarize(count = n())
+```
+
+```
+## # A tibble: 2 x 2
+##   Survived count
+##      &lt;int&gt; &lt;int&gt;
+## 1        0   549
+## 2        1   342
+```
+
+---
+
+class: inverse, middle, center
+
+## Now, the million dollar question!
+
+--
+
+## Could you buy safety with money on the titanic?
+
+---
+
+class: big-font
+
+.blue[How many passengers were there in each class?]
+
+
+```r
+titanic %&gt;%
+  group_by(Pclass) %&gt;%
+  summarize(count = n())
+```
+
+```
+## # A tibble: 3 x 2
+##   Pclass count
+##    &lt;int&gt; &lt;int&gt;
+## 1      1   216
+## 2      2   184
+## 3      3   491
+```
+
+---
+
+class: big-font
+
+.blue[How many passengers were there in each class?]
+
+
+```r
+titanic %&gt;%
+  group_by(Pclass) %&gt;%
+  summarize(count = n())
+```
+
+.blue[What was the proportion of passengers in each class?]
+
+
+```r
+titanic %&gt;%
+  group_by(Pclass) %&gt;%
+  summarize(count = n()) %&gt;%
+  mutate(class_proportion = count / sum(count))
+```
+
+```
+## # A tibble: 3 x 3
+##   Pclass count class_proportion
+##    &lt;int&gt; &lt;int&gt;            &lt;dbl&gt;
+## 1      1   216            0.242
+## 2      2   184            0.207
+## 3      3   491            0.551
+```
+
+---
+
+class: big-font
+
+.blue[How many survivors were there in each class?]
+
+
+```r
+titanic %&gt;%
+  filter(Survived == 1) %&gt;%
+  group_by(Pclass) %&gt;%
+  summarize(count = n())
+```
+
+```
+## # A tibble: 3 x 2
+##   Pclass count
+##    &lt;int&gt; &lt;int&gt;
+## 1      1   136
+## 2      2    87
+## 3      3   119
+```
+
+---
+
+class: big-font
+
+.blue[How many survivors were there in each class?]
+
+
+```r
+titanic %&gt;%
+  filter(Survived == 1) %&gt;%
+  group_by(Pclass) %&gt;%
+  summarize(count = n())
+```
+
+.blue[what was the survival rate in each class?]
+
+
+```r
+titanic %&gt;%
+  filter(Survived == 1) %&gt;%
+  group_by(Pclass) %&gt;%
+  summarize(count = n()) %&gt;%
+  mutate(survival_rate = count / sum(count)) %&gt;%
+  arrange(-survival_rate)
+```
+
+```
+## # A tibble: 3 x 3
+##   Pclass count survival_rate
+##    &lt;int&gt; &lt;int&gt;         &lt;dbl&gt;
+## 1      1   136         0.398
+## 2      3   119         0.348
+## 3      2    87         0.254
+```
+
+---
+
+class: big-font
+
+### .red[Nested summaries!]
+
+.blue[The average fare paid by gender and by class].
+
+
+```r
+titanic %&gt;%
+  group_by(Pclass, Sex) %&gt;%
+  summarize(avg_Fare = mean(Fare, na.rm = TRUE))
+```
+
+```
+## # A tibble: 6 x 3
+## # Groups:   Pclass [?]
+##   Pclass Sex    avg_Fare
+##    &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;
+## 1      1 female    106. 
+## 2      1 male       67.2
+## 3      2 female     22.0
+## 4      2 male       19.7
+## 5      3 female     16.1
+## 6      3 male       12.7
+```
+
+---
+
+class: big-font
+
+.blue[The number and proportion of survivors by gender and by class]
+
+
+```r
+titanic %&gt;%
+  filter(Survived == 1) %&gt;%
+  group_by(Pclass, Sex) %&gt;%
+  summarize(count = n()) %&gt;%
+  mutate(prop = count / sum(count))
+```
+
+```
+## # A tibble: 6 x 4
+## # Groups:   Pclass [3]
+##   Pclass Sex    count  prop
+##    &lt;int&gt; &lt;chr&gt;  &lt;int&gt; &lt;dbl&gt;
+## 1      1 female    91 0.669
+## 2      1 male      45 0.331
+## 3      2 female    70 0.805
+## 4      2 male      17 0.195
+## 5      3 female    72 0.605
+## 6      3 male      47 0.395
 ```
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
