@@ -1409,7 +1409,35 @@ titanic %>%
 ```
 
 
+---
 
+class: inverse, center, middle
+
+## List of all functions so far!
+
+---
+
+- `install.packages()`: `base` package
+
+- `library()`: `base` package
+
+- `read_csv()`: `readr` package
+
+- `View()`: `base` package
+
+- `glimpse()`: `dplyr` package
+
+- `filter()`: `dplyr` package
+
+- `arrange()`: `dplyr` package
+
+- `mutate()`:  `dplyr` package
+
+- `group_by()`: `dplyr` package
+
+- `summarize()`: `dplyr` package
+
+- `select()`: `dplyr` package
 
 
 

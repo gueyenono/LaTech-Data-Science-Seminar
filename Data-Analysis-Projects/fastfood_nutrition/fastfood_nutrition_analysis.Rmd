@@ -17,5 +17,20 @@ library(dplyr)
 library(ggplot2)
 ```
 
-
 ## Data import
+
+```{r}
+dat <- read_csv("data/fastfood_nutrition_data.csv")
+```
+
+
+## Data analysis contract!
+
+
+```{r test}
+dat %>%
+	group_by(Restaurant) %>%
+	summarize(mean_cal = mean(Calories, na.rm = TRUE)) %>%
+	arrange(-mean_cal)
+```
+
