@@ -1340,3 +1340,78 @@ titanic %>%
   mutate(prop = count / sum(count))
 ```
 
+---
+
+class: inverse, center, middle
+
+## `select()` (in the `dplyr` package)
+
+### *carefully choose as being the best or most suitable.*
+
+```{r, echo = FALSE, out.width = "70%"}
+knitr::include_graphics("https://media.giphy.com/media/xUPGctUP1Z50BNlEpa/giphy.gif")
+```
+
+---
+
+```{r}
+titanic %>%
+	select(Name, Pclass, Survived)
+```
+
+---
+
+```{r}
+titanic %>%
+	select(Survived:Parch)
+```
+
+---
+
+```{r}
+titanic %>%
+	select(-PassengerId, -Fare, -Embarked)
+```
+
+---
+
+```{r}
+titanic %>%
+	select(-(Age:Embarked))
+```
+
+---
+
+```{r}
+titanic %>%
+	select(Embarked, everything())
+```
+
+---
+
+```{r}
+titanic %>%
+	select(starts_with("s"))
+```
+
+---
+
+```{r}
+titanic %>%
+	select(ends_with("e"))
+```
+
+---
+
+```{r}
+titanic %>%
+	select(contains("ar"))
+```
+
+
+
+
+
+
+
+

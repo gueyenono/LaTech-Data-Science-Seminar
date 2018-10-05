@@ -273,7 +273,7 @@ function (formula, data, subset, weights, na.action, method = "qr",
         z$qr &lt;- NULL
     z
 }
-&lt;bytecode: 0x0000000009bcb570&gt;
+&lt;bytecode: 0x0000000009928ea0&gt;
 &lt;environment: namespace:stats&gt;
 ```
 
@@ -1275,10 +1275,10 @@ getQuote("GBPUSD=X")
 ```
 
 ```
-                  Trade Time     Last        Change    % Change     Open
-GBPUSD=X 2018-10-05 04:54:00 1.301219 -0.0008471012 -0.06505625 1.302066
+                  Trade Time     Last      Change  % Change     Open
+GBPUSD=X 2018-10-05 16:40:00 1.309672 0.007605672 0.5841186 1.302066
              High      Low Volume
-GBPUSD=X 1.303017 1.301219      0
+GBPUSD=X 1.309912 1.300373      0
 ```
 
 ```r
@@ -1286,7 +1286,7 @@ getQuote("GBPUSD=X")$Last
 ```
 
 ```
-[1] 1.301219
+[1] 1.309672
 ```
 
 ---
@@ -1305,16 +1305,16 @@ mutate(titanic, Fare = exch_rate * Fare)
 ## # A tibble: 891 x 12
 ##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
 ##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
-##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  9.43
-##  2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 92.8 
-##  3           3        1      3 Heik~ fema~    26     0     0 STON/~ 10.3 
-##  4           4        1      1 Futr~ fema~    35     1     0 113803 69.1 
+##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  9.50
+##  2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 93.4 
+##  3           3        1      3 Heik~ fema~    26     0     0 STON/~ 10.4 
+##  4           4        1      1 Futr~ fema~    35     1     0 113803 69.5 
 ##  5           5        0      3 Alle~ male     35     0     0 373450 10.5 
-##  6           6        0      3 Mora~ male     NA     0     0 330877 11.0 
-##  7           7        0      1 McCa~ male     54     0     0 17463  67.5 
-##  8           8        0      3 Pals~ male      2     3     1 349909 27.4 
-##  9           9        1      3 John~ fema~    27     0     2 347742 14.5 
-## 10          10        1      2 Nass~ fema~    14     1     0 237736 39.1 
+##  6           6        0      3 Mora~ male     NA     0     0 330877 11.1 
+##  7           7        0      1 McCa~ male     54     0     0 17463  67.9 
+##  8           8        0      3 Pals~ male      2     3     1 349909 27.6 
+##  9           9        1      3 John~ fema~    27     0     2 347742 14.6 
+## 10          10        1      2 Nass~ fema~    14     1     0 237736 39.4 
 ## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
 ## #   Embarked &lt;chr&gt;
 ```
@@ -2388,6 +2388,217 @@ titanic %&gt;%
 ## 4      2 male      17 0.195
 ## 5      3 female    72 0.605
 ## 6      3 male      47 0.395
+```
+
+---
+
+class: inverse, center, middle
+
+## `select()` (in the `dplyr` package)
+
+### *carefully choose as being the best or most suitable.*
+
+&lt;img src="https://media.giphy.com/media/xUPGctUP1Z50BNlEpa/giphy.gif" width="70%" /&gt;
+
+---
+
+
+```r
+titanic %&gt;%
+	select(Name, Pclass, Survived)
+```
+
+```
+## # A tibble: 891 x 3
+##    Name                                                Pclass Survived
+##    &lt;chr&gt;                                                &lt;int&gt;    &lt;int&gt;
+##  1 Braund, Mr. Owen Harris                                  3        0
+##  2 Cumings, Mrs. John Bradley (Florence Briggs Thayer)      1        1
+##  3 Heikkinen, Miss. Laina                                   3        1
+##  4 Futrelle, Mrs. Jacques Heath (Lily May Peel)             1        1
+##  5 Allen, Mr. William Henry                                 3        0
+##  6 Moran, Mr. James                                         3        0
+##  7 McCarthy, Mr. Timothy J                                  1        0
+##  8 Palsson, Master. Gosta Leonard                           3        0
+##  9 Johnson, Mrs. Oscar W (Elisabeth Vilhelmina Berg)        3        1
+## 10 Nasser, Mrs. Nicholas (Adele Achem)                      2        1
+## # ... with 881 more rows
+```
+
+---
+
+
+```r
+titanic %&gt;%
+	select(Survived:Parch)
+```
+
+```
+## # A tibble: 891 x 7
+##    Survived Pclass Name                            Sex     Age SibSp Parch
+##       &lt;int&gt;  &lt;int&gt; &lt;chr&gt;                           &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+##  1        0      3 Braund, Mr. Owen Harris         male     22     1     0
+##  2        1      1 Cumings, Mrs. John Bradley (Fl~ fema~    38     1     0
+##  3        1      3 Heikkinen, Miss. Laina          fema~    26     0     0
+##  4        1      1 Futrelle, Mrs. Jacques Heath (~ fema~    35     1     0
+##  5        0      3 Allen, Mr. William Henry        male     35     0     0
+##  6        0      3 Moran, Mr. James                male     NA     0     0
+##  7        0      1 McCarthy, Mr. Timothy J         male     54     0     0
+##  8        0      3 Palsson, Master. Gosta Leonard  male      2     3     1
+##  9        1      3 Johnson, Mrs. Oscar W (Elisabe~ fema~    27     0     2
+## 10        1      2 Nasser, Mrs. Nicholas (Adele A~ fema~    14     1     0
+## # ... with 881 more rows
+```
+
+---
+
+
+```r
+titanic %&gt;%
+	select(-PassengerId, -Fare, -Embarked)
+```
+
+```
+## # A tibble: 891 x 9
+##    Survived Pclass Name             Sex     Age SibSp Parch Ticket   Cabin
+##       &lt;int&gt;  &lt;int&gt; &lt;chr&gt;            &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;
+##  1        0      3 Braund, Mr. Owe~ male     22     1     0 A/5 211~ &lt;NA&gt; 
+##  2        1      1 Cumings, Mrs. J~ fema~    38     1     0 PC 17599 C85  
+##  3        1      3 Heikkinen, Miss~ fema~    26     0     0 STON/O2~ &lt;NA&gt; 
+##  4        1      1 Futrelle, Mrs. ~ fema~    35     1     0 113803   C123 
+##  5        0      3 Allen, Mr. Will~ male     35     0     0 373450   &lt;NA&gt; 
+##  6        0      3 Moran, Mr. James male     NA     0     0 330877   &lt;NA&gt; 
+##  7        0      1 McCarthy, Mr. T~ male     54     0     0 17463    E46  
+##  8        0      3 Palsson, Master~ male      2     3     1 349909   &lt;NA&gt; 
+##  9        1      3 Johnson, Mrs. O~ fema~    27     0     2 347742   &lt;NA&gt; 
+## 10        1      2 Nasser, Mrs. Ni~ fema~    14     1     0 237736   &lt;NA&gt; 
+## # ... with 881 more rows
+```
+
+---
+
+
+```r
+titanic %&gt;%
+	select(-(Age:Embarked))
+```
+
+```
+## # A tibble: 891 x 5
+##    PassengerId Survived Pclass Name                                  Sex  
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt;                                 &lt;chr&gt;
+##  1           1        0      3 Braund, Mr. Owen Harris               male 
+##  2           2        1      1 Cumings, Mrs. John Bradley (Florence~ fema~
+##  3           3        1      3 Heikkinen, Miss. Laina                fema~
+##  4           4        1      1 Futrelle, Mrs. Jacques Heath (Lily M~ fema~
+##  5           5        0      3 Allen, Mr. William Henry              male 
+##  6           6        0      3 Moran, Mr. James                      male 
+##  7           7        0      1 McCarthy, Mr. Timothy J               male 
+##  8           8        0      3 Palsson, Master. Gosta Leonard        male 
+##  9           9        1      3 Johnson, Mrs. Oscar W (Elisabeth Vil~ fema~
+## 10          10        1      2 Nasser, Mrs. Nicholas (Adele Achem)   fema~
+## # ... with 881 more rows
+```
+
+---
+
+
+```r
+titanic %&gt;%
+	select(Embarked, everything())
+```
+
+```
+## # A tibble: 891 x 12
+##    Embarked PassengerId Survived Pclass Name  Sex     Age SibSp Parch
+##    &lt;chr&gt;          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+##  1 S                  1        0      3 Brau~ male     22     1     0
+##  2 C                  2        1      1 Cumi~ fema~    38     1     0
+##  3 S                  3        1      3 Heik~ fema~    26     0     0
+##  4 S                  4        1      1 Futr~ fema~    35     1     0
+##  5 S                  5        0      3 Alle~ male     35     0     0
+##  6 Q                  6        0      3 Mora~ male     NA     0     0
+##  7 S                  7        0      1 McCa~ male     54     0     0
+##  8 S                  8        0      3 Pals~ male      2     3     1
+##  9 S                  9        1      3 John~ fema~    27     0     2
+## 10 C                 10        1      2 Nass~ fema~    14     1     0
+## # ... with 881 more rows, and 3 more variables: Ticket &lt;chr&gt;, Fare &lt;dbl&gt;,
+## #   Cabin &lt;chr&gt;
+```
+
+---
+
+
+```r
+titanic %&gt;%
+	select(starts_with("s"))
+```
+
+```
+## # A tibble: 891 x 3
+##    Survived Sex    SibSp
+##       &lt;int&gt; &lt;chr&gt;  &lt;int&gt;
+##  1        0 male       1
+##  2        1 female     1
+##  3        1 female     0
+##  4        1 female     1
+##  5        0 male       0
+##  6        0 male       0
+##  7        0 male       0
+##  8        0 male       3
+##  9        1 female     0
+## 10        1 female     1
+## # ... with 881 more rows
+```
+
+---
+
+
+```r
+titanic %&gt;%
+	select(ends_with("e"))
+```
+
+```
+## # A tibble: 891 x 3
+##    Name                                                  Age  Fare
+##    &lt;chr&gt;                                               &lt;dbl&gt; &lt;dbl&gt;
+##  1 Braund, Mr. Owen Harris                                22  7.25
+##  2 Cumings, Mrs. John Bradley (Florence Briggs Thayer)    38 71.3 
+##  3 Heikkinen, Miss. Laina                                 26  7.92
+##  4 Futrelle, Mrs. Jacques Heath (Lily May Peel)           35 53.1 
+##  5 Allen, Mr. William Henry                               35  8.05
+##  6 Moran, Mr. James                                       NA  8.46
+##  7 McCarthy, Mr. Timothy J                                54 51.9 
+##  8 Palsson, Master. Gosta Leonard                          2 21.1 
+##  9 Johnson, Mrs. Oscar W (Elisabeth Vilhelmina Berg)      27 11.1 
+## 10 Nasser, Mrs. Nicholas (Adele Achem)                    14 30.1 
+## # ... with 881 more rows
+```
+
+---
+
+
+```r
+titanic %&gt;%
+	select(contains("ar"))
+```
+
+```
+## # A tibble: 891 x 3
+##    Parch  Fare Embarked
+##    &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;   
+##  1     0  7.25 S       
+##  2     0 71.3  C       
+##  3     0  7.92 S       
+##  4     0 53.1  S       
+##  5     0  8.05 S       
+##  6     0  8.46 Q       
+##  7     0 51.9  S       
+##  8     1 21.1  S       
+##  9     2 11.1  S       
+## 10     0 30.1  C       
+## # ... with 881 more rows
 ```
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
