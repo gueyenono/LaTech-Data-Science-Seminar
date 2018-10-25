@@ -273,7 +273,7 @@ function (formula, data, subset, weights, na.action, method = "qr",
         z$qr &lt;- NULL
     z
 }
-&lt;bytecode: 0x00000000193f2978&gt;
+&lt;bytecode: 0x0000000009906c18&gt;
 &lt;environment: namespace:stats&gt;
 ```
 
@@ -1275,10 +1275,10 @@ getQuote("GBPUSD=X")
 ```
 
 ```
-                  Trade Time     Last      Change  % Change     Open
-GBPUSD=X 2018-10-05 18:21:00 1.309826 0.007760048 0.5959762 1.302066
-             High      Low Volume
-GBPUSD=X 1.310822 1.300373      0
+                  Trade Time     Last       Change   % Change     Open
+GBPUSD=X 2018-10-12 03:30:59 1.323644 0.0002977848 0.02250095 1.323119
+            High      Low Volume
+GBPUSD=X 1.32438 1.322856      0
 ```
 
 ```r
@@ -1286,7 +1286,7 @@ getQuote("GBPUSD=X")$Last
 ```
 
 ```
-[1] 1.309826
+[1] 1.323644
 ```
 
 ---
@@ -1305,16 +1305,16 @@ mutate(titanic, Fare = exch_rate * Fare)
 ## # A tibble: 891 x 12
 ##    PassengerId Survived Pclass Name  Sex     Age SibSp Parch Ticket  Fare
 ##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
-##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  9.50
-##  2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 93.4 
-##  3           3        1      3 Heik~ fema~    26     0     0 STON/~ 10.4 
-##  4           4        1      1 Futr~ fema~    35     1     0 113803 69.6 
-##  5           5        0      3 Alle~ male     35     0     0 373450 10.5 
-##  6           6        0      3 Mora~ male     NA     0     0 330877 11.1 
-##  7           7        0      1 McCa~ male     54     0     0 17463  67.9 
-##  8           8        0      3 Pals~ male      2     3     1 349909 27.6 
-##  9           9        1      3 John~ fema~    27     0     2 347742 14.6 
-## 10          10        1      2 Nass~ fema~    14     1     0 237736 39.4 
+##  1           1        0      3 Brau~ male     22     1     0 A/5 2~  9.60
+##  2           2        1      1 Cumi~ fema~    38     1     0 PC 17~ 94.4 
+##  3           3        1      3 Heik~ fema~    26     0     0 STON/~ 10.5 
+##  4           4        1      1 Futr~ fema~    35     1     0 113803 70.3 
+##  5           5        0      3 Alle~ male     35     0     0 373450 10.7 
+##  6           6        0      3 Mora~ male     NA     0     0 330877 11.2 
+##  7           7        0      1 McCa~ male     54     0     0 17463  68.6 
+##  8           8        0      3 Pals~ male      2     3     1 349909 27.9 
+##  9           9        1      3 John~ fema~    27     0     2 347742 14.7 
+## 10          10        1      2 Nass~ fema~    14     1     0 237736 39.8 
 ## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
 ## #   Embarked &lt;chr&gt;
 ```

@@ -1439,7 +1439,16 @@ class: inverse, center, middle
 
 - `select()`: `dplyr` package
 
+---
+
+class: inverse, middle, center
 
 
+# Foundations of data visualization with `ggplot2`
 
+---
+
+```{r, eval = FALSE}
+titanic
+```
 
