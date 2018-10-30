@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>What You Wish You Knew Before College!</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Ghislain Nono Gueye, Ph.D." />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style\style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# What You Wish You Knew Before College!
+### Ghislain Nono Gueye, Ph.D.
+
+---
+
+
+
+
+class: center, middle
+
+# Let's Get To Know Our Data!
+
+---
+
+## Load packages
+
+
+```r
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+---
+
+#### Download the data
+
+
+```r
+grads &lt;- read_csv("data/recent_grads.csv")
+grads
+```
+
+```
+## # A tibble: 173 x 21
+##     Rank Major_code Major Total   Men Women Major_category ShareWomen
+##    &lt;int&gt;      &lt;int&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;dbl&gt;
+##  1     1       2419 PETR~  2339  2057   282 Engineering         0.121
+##  2     2       2416 MINI~   756   679    77 Engineering         0.102
+##  3     3       2415 META~   856   725   131 Engineering         0.153
+##  4     4       2417 NAVA~  1258  1123   135 Engineering         0.107
+##  5     5       2405 CHEM~ 32260 21239 11021 Engineering         0.342
+##  6     6       2418 NUCL~  2573  2200   373 Engineering         0.145
+##  7     7       6202 ACTU~  3777  2110  1667 Business            0.441
+##  8     8       5001 ASTR~  1792   832   960 Physical Scie~      0.536
+##  9     9       2414 MECH~ 91227 80320 10907 Engineering         0.120
+## 10    10       2408 ELEC~ 81527 65511 16016 Engineering         0.196
+## # ... with 163 more rows, and 13 more variables: Sample_size &lt;int&gt;,
+## #   Employed &lt;int&gt;, Full_time &lt;int&gt;, Part_time &lt;int&gt;,
+## #   Full_time_year_round &lt;int&gt;, Unemployed &lt;int&gt;, Unemployment_rate &lt;dbl&gt;,
+## #   Median &lt;int&gt;, P25th &lt;int&gt;, P75th &lt;int&gt;, College_jobs &lt;int&gt;,
+## #   Non_college_jobs &lt;int&gt;, Low_wage_jobs &lt;int&gt;
+```
+
+---
+
+#### Get a glimpse of the data
+
+
+```r
+glimpse(grads)
+```
+
+---
+
+#### Distribution of median salaries
+
+
+```r
+ggplot(data = grads, mapping = aes(x = Median)) +
+	geom_histogram()
+```
+
+![](picking_college_major_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+
+#### Distribution of Median salaries by major category
+
+
+```r
+ggplot(data = grads, aes(x = Major_category, y = Median)) +
+	geom_boxplot()
+```
+
+![](picking_college_major_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+#### Distribution of Median salaries by major category
+
+Flip the coordinates!
+
+
+```r
+ggplot(data = grads, aes(x = Major_category, y = Median)) +
+	geom_boxplot() +
+	coord_flip()
+```
+
+![](picking_college_major_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

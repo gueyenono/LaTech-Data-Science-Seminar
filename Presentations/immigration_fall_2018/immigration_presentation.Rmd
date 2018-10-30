@@ -1,0 +1,179 @@
+---
+title: "The Benefits of Immigration in the USA"
+subtitle: ""
+author: "Ghislain Nono Gueye, Ph.D."
+date: "10/30/2018"
+output:
+  xaringan::moon_reader:
+    css: [default, "style.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(forcats)
+library(scales)
+```
+
+class: inverse, middle, center
+
+# Analyzing welfare
+
+---
+
+### Costs and benefits
+
+- Every economic choice has benefits and costs.
+
+- Rationality: making choices when benefits outweigh costs.
+
+<br/>
+
+- [E.g.1] The guns and butter trade-off.
+
+- [E.g.2] Industrialization vs clean environment
+
+- [E.g.3] Efficiency vs Equality
+
+---
+
+class: inverse, middle, center
+
+# Immigration surplus
+
+---
+
+### Factors of production
+
+- .red[Capital]
+    
+- Entrepreneurship
+    
+- Land
+    
+- .red[Labor]
+
+<br/>
+
+--
+
+.center[
+Capital + Labor = Production $\rightarrow$ Income
+]
+
+<br/>
+
+--
+
+- .blue[Capital in the USA is under-utilized in many industries.]
+
+--
+
+- .red[Immigration surplus] is the increase in the aggregate wealth of the natives resulting from the productive contributions of immigrants.
+
+--
+
+- .red[Estimate: 0.2 to 0.4% of GDP ($36 to $72 billion per year)]
+
+---
+
+class: inverse, middle, center
+
+# Relieving bottlenecks/shortages
+
+---
+
+**Immigrants naturally flow to where workers are needed.**
+
+--
+
+.blue[Example 1]
+
+During World War II, Mexican immigrants helped alleviate shortages arising from the war effort.
+
+--
+
+.blue[Example 2]
+
+During the oil boom of late 1970s and early 1980s, there was a record flow of immigrants to Texas.
+
+--
+
+.blue[Example 3]
+
+The high-tech industry received many immigrants during the internet boom  in the 2000s.
+
+---
+
+class: inverse, middle, center
+
+# Increase in overall efficiency/productivity
+
+---
+
+### Some statistics
+
+**The average immigrant in the USA innovates more than the average native.**
+
+- .blue[Immigrants are concentrated in STEM fields:]
+
+    - 44% of medical scientists
+    
+    - 42% of computer software developers
+    
+    - 35% of faculty in engineering
+    
+    - 39% of faculty in computer science
+    
+--
+
+- .blue[The US has more immigrant inventors than every other country combined:]
+
+---
+
+```{r immigrant_inventors1, message = FALSE, warning = FALSE, echo = FALSE, out.width = "75%", fig.align = "center"}
+
+dat <- read_csv("data/immigrant_inventors_by_country.csv") %>%
+	rename(patents = `Immigrants with patents`) %>%
+	mutate(country = fct_reorder(country, patents),
+			 patents = patents/1000)
+
+ggplot(data = dat, aes(x = country, y = patents, color = country)) +
+	geom_point() +
+	geom_linerange(aes(ymin = 0, ymax = patents)) +
+	labs(x = "", y = "", title = "Number of patents owned by immigrants between 2000 and 2016", subtitle = "(in thousands)") +
+	theme_bw() +
+	theme(legend.position = "none") +
+	coord_flip()
+```
+
+---
+
+```{r immigrant_inventors2, echo = FALSE, out.width = "85%", fig.align = "center"}
+dat %>%
+	mutate(country2 = if_else(country == "United States", "United States", "All other countries"),
+			 country2 = as.factor(country2)) %>%
+	group_by(country2) %>%
+	summarize(patents = sum(patents)) %>%
+	mutate(country2 = fct_reorder(country2, desc(patents))) %>%
+	
+	ggplot(aes(x = country2, y = patents, fill = country2)) +
+	geom_bar(stat = "identity", show.legend = FALSE) +
+	labs(x = "", y = "", title = "Number of patents owned by immigrants between 2000 and 2016", subtitle = "(in thousands)") +
+	theme_bw()
+```
+
+---
+
+class: inverse, middle, center
+
+# THANK YOU!
+
+

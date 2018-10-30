@@ -1,0 +1,112 @@
+---
+title: "What You Wish You Knew Before College!"
+subtitle: ""
+author: "Ghislain Nono Gueye, Ph.D."
+date: ""
+output:
+  xaringan::moon_reader:
+    css: [default, "style/style.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+class: center, middle
+
+# Let's Get To Know Our Data!
+
+---
+
+**Load packages**
+
+```{r, message = FALSE, warning = FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+---
+
+**Download the data**
+
+```{r, message = FALSE, warning = FALSE}
+grads <- read_csv("data/recent_grads.csv")
+grads
+```
+
+---
+**Get a glimpse of the data**
+
+```{r, eval = FALSE}
+glimpse(grads)
+```
+
+---
+**Distribution of median salaries**
+
+```{r, message = FALSE, warning = FALSE}
+ggplot(data = grads, mapping = aes(x = Median)) +
+	geom_histogram()
+```
+
+---
+**Visualize median salaries by major categories**
+
+
+
+---
+
+**Distribution of Median salaries by major category**
+
+```{r}
+ggplot(data = grads, aes(x = Major_category, y = Median)) +
+	geom_boxplot()
+```
+
+---
+
+```{r}
+ggplot(data = grads, aes(x = Major_category, y = Median)) +
+	geom_boxplot() +
+	coord_flip()
+```
+
+---
+
+```{r}
+library(forcats)
+
+ggplot(data = grads, aes(x = fct_reorder(Major_category, Median), y = Median)) +
+	geom_boxplot() +
+	coord_flip()
+```
+
+---
+
+```{r}
+library(forcats)
+
+ggplot(data = grads, aes(x = fct_reorder(Major_category, Median), y = Median)) +
+	geom_boxplot() +
+	coord_flip() +
+	labs(x = "", y = "Median salary")
+```
+
+---
+
+```{r}
+library(forcats)
+library(scales)
+
+ggplot(data = grads, aes(x = fct_reorder(Major_category, Median), y = Median)) +
+	geom_boxplot() +
+	coord_flip() +
+	labs(x = "", y = "Median salary") +
+	scale_y_continuous(labels = dollar_format())
+```
