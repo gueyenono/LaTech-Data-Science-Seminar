@@ -17,4 +17,4 @@ knitr::opts_chunk$set(echo = TRUE)
 
 [3- Picking a college major](/Presentations/picking_college_major/picking_college_major.html)
 
-[4- The Benefits of Immigration in the USA](/Presentations/immigration_fall_2018/immigration_presentation.html)
+[4- The Benefits of Immigration in the USA](/Presentations/immigration_fall_2018/index.html)
