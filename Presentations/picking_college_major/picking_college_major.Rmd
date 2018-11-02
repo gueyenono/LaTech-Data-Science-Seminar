@@ -48,7 +48,12 @@ glimpse(grads)
 ```
 
 ---
-**Distribution of median salaries**
+
+class: center, middle
+
+### What is the distribution of median salaries by major?
+
+---
 
 ```{r, message = FALSE, warning = FALSE}
 ggplot(data = grads, mapping = aes(x = Median)) +
@@ -56,8 +61,62 @@ ggplot(data = grads, mapping = aes(x = Median)) +
 ```
 
 ---
+
+class: center, middle
+
+### Visualize median salaries by major category?
+
+---
+
+```{r, message = FALSE, warning = FALSE}
+
+salary_maj_cat <- grads %>%
+	group_by(Major_category) %>%
+	summarize(median_salary = median(Median))
+
+salary_maj_cat
+```
+
+---
+
+```{r}
+ggplot(data = salary_maj_cat, mapping = aes(x = Major_category, y = median_salary)) +
+	geom_col()
+```
+
+---
+
+```{r}
+library(forcats)
+
+salary_maj_cat %>%
+	mutate(Major_category = fct_reorder(Major_category, median_salary)) %>%
+
+ggplot(mapping = aes(x = Major_category, y = median_salary)) +
+	geom_col()
+```
+
+---
+
+```{r}
+salary_maj_cat <- salary_maj_cat %>%
+	mutate(Major_category = fct_reorder(Major_category, median_salary))
+
+ggplot(data = salary_maj_cat, mapping = aes(x = Major_category, y = median_salary)) +
+	geom_col() +
+	coord_flip()
+```
+
+
+
+---
 **Visualize median salaries by major categories**
 
+```{r}
+# grads %>%
+	
+# ggplot(data = grads, aes())
+```
 
 
 ---

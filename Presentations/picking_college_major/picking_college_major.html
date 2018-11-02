@@ -74,7 +74,12 @@ glimpse(grads)
 ```
 
 ---
-**Distribution of median salaries**
+
+class: center, middle
+
+### What is the distribution of median salaries by major?
+
+---
 
 
 ```r
@@ -85,8 +90,94 @@ ggplot(data = grads, mapping = aes(x = Median)) +
 ![](picking_college_major_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 
 ---
+
+class: center, middle
+
+### Visualize median salaries by major category?
+
+---
+
+
+```r
+salary_maj_cat &lt;- grads %&gt;%
+	group_by(Major_category) %&gt;%
+	summarize(median_salary = median(Median))
+
+salary_maj_cat
+```
+
+```
+## # A tibble: 16 x 2
+##    Major_category                      median_salary
+##    &lt;chr&gt;                                       &lt;dbl&gt;
+##  1 Agriculture &amp; Natural Resources             35000
+##  2 Arts                                        30750
+##  3 Biology &amp; Life Science                      36300
+##  4 Business                                    40000
+##  5 Communications &amp; Journalism                 35000
+##  6 Computers &amp; Mathematics                     45000
+##  7 Education                                   32750
+##  8 Engineering                                 57000
+##  9 Health                                      35000
+## 10 Humanities &amp; Liberal Arts                   32000
+## 11 Industrial Arts &amp; Consumer Services         35000
+## 12 Interdisciplinary                           35000
+## 13 Law &amp; Public Policy                         36000
+## 14 Physical Sciences                           39500
+## 15 Psychology &amp; Social Work                    30000
+## 16 Social Science                              38000
+```
+
+---
+
+
+```r
+ggplot(data = salary_maj_cat, mapping = aes(x = Major_category, y = median_salary)) +
+	geom_col()
+```
+
+![](picking_college_major_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+library(forcats)
+
+salary_maj_cat %&gt;%
+	mutate(Major_category = fct_reorder(Major_category, median_salary)) %&gt;%
+
+ggplot(mapping = aes(x = Major_category, y = median_salary)) +
+	geom_col()
+```
+
+![](picking_college_major_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+salary_maj_cat &lt;- salary_maj_cat %&gt;%
+	mutate(Major_category = fct_reorder(Major_category, median_salary))
+
+ggplot(data = salary_maj_cat, mapping = aes(x = Major_category, y = median_salary)) +
+	geom_col() +
+	coord_flip()
+```
+
+![](picking_college_major_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+
+
+---
 **Visualize median salaries by major categories**
 
+
+```r
+# grads %&gt;%
+	
+# ggplot(data = grads, aes())
+```
 
 
 ---
@@ -99,7 +190,7 @@ ggplot(data = grads, aes(x = Major_category, y = Median)) +
 	geom_boxplot()
 ```
 
-![](picking_college_major_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+![](picking_college_major_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -110,7 +201,7 @@ ggplot(data = grads, aes(x = Major_category, y = Median)) +
 	coord_flip()
 ```
 
-![](picking_college_major_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+![](picking_college_major_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -123,7 +214,7 @@ ggplot(data = grads, aes(x = fct_reorder(Major_category, Median), y = Median)) +
 	coord_flip()
 ```
 
-![](picking_college_major_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+![](picking_college_major_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -137,7 +228,7 @@ ggplot(data = grads, aes(x = fct_reorder(Major_category, Median), y = Median)) +
 	labs(x = "", y = "Median salary")
 ```
 
-![](picking_college_major_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](picking_college_major_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -166,7 +257,7 @@ ggplot(data = grads, aes(x = fct_reorder(Major_category, Median), y = Median)) +
 	scale_y_continuous(labels = dollar_format())
 ```
 
-![](picking_college_major_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+![](picking_college_major_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

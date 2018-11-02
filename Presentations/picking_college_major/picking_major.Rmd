@@ -1,0 +1,176 @@
+---
+title: "Picking a college major"
+author: "Ghislain Nono Gueye, Ph.D."
+date: "November 2, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load useful packages
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(stringr)
+library(forcats)
+library(scales)
+```
+
+
+## Import the data into R
+
+```{r}
+grads <- read_csv("data/recent_grads.csv")
+grads
+glimpse(grads)
+```
+
+
+## Distribution of median salaries by major
+
+```{r}
+ggplot(data = grads, aes(x = Median)) +
+	geom_histogram()
+```
+
+## Highest earning majors (median salary)
+
+```{r}
+high <- 
+	grads %>%
+	arrange(-Median) %>%
+	select(Major, Median)
+
+ggplot(data = high, aes(x = Major, y = Median)) +
+	geom_col()
+```
+
+The plot has issues! Let's focus on the 20 highest earning majors
+
+```{r}
+high_20 <- head(high, 20)
+
+ggplot(data = high_20, aes(x = Major, y = Median)) +
+	geom_col()
+```
+
+We still have issues, but it's slightly better. Let's reorder the bars.
+
+```{r}
+high_20 <- 
+	high_20 %>%
+	mutate(Major = fct_reorder(Major, Median))
+
+ggplot(data = high_20, aes(x = Major, y = Median)) +
+	geom_col()
+```
+
+Final touch to the plot.
+
+```{r}
+ggplot(data = high_20, aes(x = Major, y = Median)) +
+	geom_col() +
+	coord_flip()
+```
+
+Well, we need one final final touch :)
+
+```{r}
+high_20 <-
+	high_20 %>%
+	mutate(Major = str_to_title(Major),
+			 Major = fct_reorder(Major, Median))
+
+ggplot(data = high_20, aes(x = Major, y = Median)) +
+	geom_col() +
+	coord_flip()
+```
+
+Creating too many variables for intermediate processing steps is not necessary in R. The pipe operator `%>%` is very useful. Here is the full code:
+
+```{r}
+top_20 <- 
+	grads %>%
+	arrange(-Median) %>%
+	head(20) %>%
+	select(Major, Median) %>%
+	mutate(
+		Major = str_to_title(Major),
+		Major = fct_reorder(Major, Median)
+	)
+
+ggplot(data = top_20, aes(x = Major, y = Median)) +
+	geom_col() +
+	coord_flip()
+```
+
+## Visualize the bottom 20 majors (median salary)
+
+**Practice**
+
+
+## Visualize median salary by major category
+
+```{r}
+salary_maj_cat <-
+	grads %>%
+	group_by(Major_category) %>%
+	summarize(Median = median(Median)) %>%
+	mutate(Major_category = fct_reorder(Major_category, Median))
+
+salary_maj_cat
+
+ggplot(data = salary_maj_cat, aes(x = Major_category, y = Median)) +
+	geom_col() +
+	coord_flip()
+```
+
+## Analyze the salary distribution of majors within the business category
+
+```{r}
+business_majors <-
+	grads %>%
+	filter(Major_category == "Business") %>%
+	select(Major, Median, P25th, P75th) %>%
+	mutate(
+		Major = str_to_title(Major),
+		Major = fct_reorder(Major, Median)
+	)
+
+ggplot(data = business_majors, aes(x = Major, y = Median)) + 
+	geom_point() +
+	geom_errorbar(aes(ymin = P25th, ymax = P75th)) +
+	expand_limits(y = 0) +
+	coord_flip()
+```
+
+
+## Analyze the salary distribution of majors within the engineering major category
+
+**Practice**
+
+
+## Analyze the salary distribution of top 20 majors
+
+```{r}
+major_processed <- 
+	grads %>%
+	select(Major, Major_category, Median, P25th, P75th) %>%
+	mutate(
+		Major = str_to_title(Major),
+		Major = fct_reorder(Major, Median)
+	)
+
+major_processed %>%
+	head(20) %>%
+	
+	ggplot(aes(x = Major, y = Median, color = Major_category)) +
+	geom_point() +
+	geom_errorbar(aes(ymin = P25th, ymax = P75th)) +
+	coord_flip()
+```
+
