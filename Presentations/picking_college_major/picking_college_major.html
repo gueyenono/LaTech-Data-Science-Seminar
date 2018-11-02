@@ -25,7 +25,7 @@ class: center, middle
 
 ---
 
-## Load packages
+**Load packages**
 
 
 ```r
@@ -36,7 +36,7 @@ library(ggplot2)
 
 ---
 
-#### Download the data
+**Download the data**
 
 
 ```r
@@ -66,8 +66,7 @@ grads
 ```
 
 ---
-
-#### Get a glimpse of the data
+**Get a glimpse of the data**
 
 
 ```r
@@ -75,8 +74,7 @@ glimpse(grads)
 ```
 
 ---
-
-#### Distribution of median salaries
+**Distribution of median salaries**
 
 
 ```r
@@ -87,8 +85,13 @@ ggplot(data = grads, mapping = aes(x = Median)) +
 ![](picking_college_major_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 
 ---
+**Visualize median salaries by major categories**
 
-#### Distribution of Median salaries by major category
+
+
+---
+
+**Distribution of Median salaries by major category**
 
 
 ```r
@@ -100,10 +103,6 @@ ggplot(data = grads, aes(x = Major_category, y = Median)) +
 
 ---
 
-#### Distribution of Median salaries by major category
-
-Flip the coordinates!
-
 
 ```r
 ggplot(data = grads, aes(x = Major_category, y = Median)) +
@@ -112,6 +111,62 @@ ggplot(data = grads, aes(x = Major_category, y = Median)) +
 ```
 
 ![](picking_college_major_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+library(forcats)
+
+ggplot(data = grads, aes(x = fct_reorder(Major_category, Median), y = Median)) +
+	geom_boxplot() +
+	coord_flip()
+```
+
+![](picking_college_major_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+library(forcats)
+
+ggplot(data = grads, aes(x = fct_reorder(Major_category, Median), y = Median)) +
+	geom_boxplot() +
+	coord_flip() +
+	labs(x = "", y = "Median salary")
+```
+
+![](picking_college_major_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+library(forcats)
+library(scales)
+```
+
+```
+## 
+## Attaching package: 'scales'
+```
+
+```
+## The following object is masked from 'package:readr':
+## 
+##     col_factor
+```
+
+```r
+ggplot(data = grads, aes(x = fct_reorder(Major_category, Median), y = Median)) +
+	geom_boxplot() +
+	coord_flip() +
+	labs(x = "", y = "Median salary") +
+	scale_y_continuous(labels = dollar_format())
+```
+
+![](picking_college_major_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
