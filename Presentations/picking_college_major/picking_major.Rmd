@@ -108,6 +108,7 @@ ggplot(data = top_20, aes(x = Major, y = Median)) +
 	coord_flip()
 ```
 
+
 ## Visualize the bottom 20 majors (median salary)
 
 **Practice**
@@ -127,6 +128,20 @@ salary_maj_cat
 ggplot(data = salary_maj_cat, aes(x = Major_category, y = Median)) +
 	geom_col() +
 	coord_flip()
+```
+
+## Salary distribution of majors within categories
+
+```{r}
+major_cat_processed <-
+	grads %>%
+	mutate(Major_category = fct_reorder(Major_category, Median))
+
+ggplot(data = major_cat_processed, aes(x = Major_category, y = Median)) +
+	geom_boxplot() +
+	scale_y_continuous(labels = dollar_format()) +
+	coord_flip() +
+	labs(x = "", y = "")
 ```
 
 ## Analyze the salary distribution of majors within the business category
